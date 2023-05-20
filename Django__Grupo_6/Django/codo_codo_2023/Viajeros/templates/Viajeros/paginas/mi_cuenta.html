@@ -15,17 +15,17 @@
 
 {% block contenido %}
 <section class="listado">
-    Usuario: {{user.username}}
-    <br>
-    {% for reserva in listado_reservas %}
+
+
         <article>
-            <!-- <p><b>Usuario:</b>: {{reserva.usuario}}</p> -->
-            <p><b>fecha desde:</b>: {{reserva.fecha_desde}}</p>
-            <p><b>fecha hasta:</b>: {{reserva.fecha_hasta}}</p>
-            <p><b>Hotel:</b>: {{reserva.hotel_id}}</p>
+
+            <p><b>Usuario:</b>: {{user.username}}</p>
+            <p><b>Nombre:</b>: {{user.first_name}}</p>
+            <p><b>Apellido:</b>: {{user.last_name}}</p>
+            <p><b>Email:</b>: {{user.email}}</p>
+
+
         </article>
-        {% empty %}
-        
-        {% endfor %}
+
         </section>
 {% endblock %}

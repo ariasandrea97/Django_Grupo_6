@@ -74,12 +74,23 @@ WSGI_APPLICATION = 'codo_codo_2023.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'viajeros',
+#         'USER': 'postgres',
+#         'PASSWORD': '9876',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'viajeros',
         'USER': 'postgres',
-        'PASSWORD': '9876',
+        'PASSWORD': 'Django1234',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -108,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es'
 
 TIME_ZONE = 'UTC'
 

@@ -1,10 +1,11 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from .models import Reservas #Usuario
 
-#
+
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
+from django.forms import ModelForm
 
 
 BIRTH_YEAR_CHOICES = range(1980,2006)
@@ -42,61 +43,75 @@ TYPE_RESERVA = [
 ]
 
 
-class EnviarConsultaForm(forms.Form):
-        nombre = forms.CharField(label="Nombre ",widget=forms.TextInput(), required=True)
-        apellido = forms.CharField(label="Apellido ", required=True)
-        mail = forms.EmailField(label="Mail", required=True)
-        telefono = forms.CharField(label="Telefono", required=True)
+# class EnviarConsultaForm(forms.Form):
+#         nombre = forms.CharField(label="Nombre ",widget=forms.TextInput(), required=True)
+#         apellido = forms.CharField(label="Apellido ", required=True)
+#         mail = forms.EmailField(label="Mail", required=True)
+#         telefono = forms.CharField(label="Telefono", required=True)
 
 
-        # fecha_ingreso = forms.DateField(
-        #     widget=forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES)
-        # )
-        tipo = forms.ChoiceField(
-            label="Tipo de reserva",
-            widget=forms.Select,
-            choices=TYPE_RESERVA,
-        )
-        # Campo Fecha con date picker en el chrome.
-        fecha_desde = forms.DateField(label="Fecha Desde", widget=forms.DateInput(attrs={'type': 'date'}))
-        fecha_hasta = forms.DateField(label="Fecha Hasta", widget=forms.DateInput(attrs={'type': 'date'}))
-        #validar que la fecha hasta sea mayor que la fecha desde
+#         # fecha_ingreso = forms.DateField(
+#         #     widget=forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES)
+#         # )
+#         tipo = forms.ChoiceField(
+#             label="Tipo de reserva",
+#             widget=forms.Select,
+#             choices=TYPE_RESERVA,
+#         )
+#         # Campo Fecha con date picker en el chrome.
+#         fecha_desde = forms.DateField(label="Fecha Desde", widget=forms.DateInput(attrs={'type': 'date'}))
+#         fecha_hasta = forms.DateField(label="Fecha Hasta", widget=forms.DateInput(attrs={'type': 'date'}))
+#         #validar que la fecha hasta sea mayor que la fecha desde
 
-        adultos = forms.ChoiceField(
-            label="Adultos",
-            widget=forms.Select,
-            choices=TYPE_CHOICES,
-        )
-        niños  = forms.ChoiceField(
-            label="Niños",
-            widget=forms.Select,
-            choices=TYPE_CHOICES2,
-        )
+#         adultos = forms.ChoiceField(
+#             label="Adultos",
+#             widget=forms.Select,
+#             choices=TYPE_CHOICES,
+#         )
+#         niños  = forms.ChoiceField(
+#             label="Niños",
+#             widget=forms.Select,
+#             choices=TYPE_CHOICES2,
+#         )
 
-        mensaje = forms.CharField(widget=forms.Textarea)
+#         mensaje = forms.CharField(widget=forms.Textarea)
         
-        def clean_mail(self):
-            # Validación del campo Mail
+#         # def clean(self):
+#         #     # Validación de fechas
 
-            # Para mas detalle
-            # https://docs.djangoproject.com/en/4.2/ref/forms/validation/
+#         #     if self.fecha_desde >self.fecha_hasta :
+#         #         print('La fecha hasta debe ser mayor a la fecha de inicio')
+#         #         #raise forms.ValidationError("La fecha hasta debe ser mayor a la fecha de inicio")
+#         #         #raise ValidationError('La fecha hasta debe ser mayor a la fecha de inicio')
 
-            # aqui podemos poner la logica de negocio necesaria para 
-            # efectivamente validar si por ejemplo el campo mail es valido
-            # o no.
+class EnviarReservaForm(forms.ModelForm):
+    fecha_desde = forms.DateField(label="Fecha Desde", widget=forms.DateInput(attrs={'type': 'date'}))
+    fecha_hasta = forms.DateField(label="Fecha Hasta", widget=forms.DateInput(attrs={'type': 'date'}))
+#         
+    class Meta:
+        model = Reservas
 
-            # Si es valido se devuelve la info, caso contrario se lanza 
-            # un ValidationError.
-
-            # Pueden cambiar la logica del if para probar ambos casos.
-
-            data = self.cleaned_data["mail"]
-        # if True:
-        #     raise ValidationError("El mail utilizado ya existe")
-
-            # Always return a value to use as the new cleaned data, even if
-            # this method didn't change it.
-            return data
+        fields= ['Tipo_reserva', 'fecha_desde', 'fecha_hasta', 'adulto','menor']
 
 
+class AltaUsuarioForm(UserCreationForm):
 
+    class Meta:
+        model = User
+        fields =  ['first_name', 'last_name', 'email', 'username','password1', 'password2']
+
+    # Check unique email
+    # Email exists && account active -> email_already_registered
+    # Email exists && account not active -> delete previous account and register new one
+    def clean_email(self):
+        email_passed = self.cleaned_data.get("email")
+        email_already_registered = User.objects.filter(email = email_passed).exists()
+        user_is_active = User.objects.filter(email = email_passed, is_active = 1)
+        if email_already_registered and user_is_active:
+            print('email_already_registered and user_is_active')
+            raise forms.ValidationError("Email already registered.")
+        elif email_already_registered:
+            print('email_already_registered')
+            User.objects.filter(email = email_passed).delete()
+
+        return email_passed
