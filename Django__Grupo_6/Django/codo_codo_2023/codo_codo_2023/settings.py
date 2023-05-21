@@ -71,15 +71,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'codo_codo_2023.wsgi.application'
 
 
-# Database
+# Database  
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'viajeros',
+#         'NAME': 'Viajeros',
 #         'USER': 'postgres',
-#         'PASSWORD': '9876',
+#         'PASSWORD': '123456',
 #         'HOST': '127.0.0.1',
 #         'PORT': '5432',
 #     }
@@ -88,9 +88,9 @@ WSGI_APPLICATION = 'codo_codo_2023.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'viajeros',
+        'NAME': 'Viajeros',
         'USER': 'postgres',
-        'PASSWORD': 'Django1234',
+        'PASSWORD': '9876',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
