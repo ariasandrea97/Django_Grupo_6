@@ -29,9 +29,9 @@ class Hotel(models.Model):
 
 class Reservas(models.Model):
     TIPO_CHOICES = (
-        ('0', 'Alojamiento'),
-        ('1', 'Excursion'),
-        ('2', 'Gastronomia'),
+        ('Alojamiento', 'Alojamiento'),
+        ('Excursion', 'Excursion'),
+        ('Gastronomia', 'Gastronomia'),
         # ('3', 'RECURSOS HUMANOS'),
         # ('4', 'OTROS'),
     )
@@ -71,7 +71,7 @@ class Reservas(models.Model):
     usuario = models.CharField(max_length=128, verbose_name="usuario ")
     # hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE)
 
-    Tipo_reserva = models.CharField('Tipo de reserva', max_length=1, choices=TIPO_CHOICES)
+    Tipo_reserva = models.CharField('Tipo de reserva', max_length=15, choices=TIPO_CHOICES)
     adulto = models.CharField('Cantidad de Adultos', max_length=2, choices=TIPO_ADULTO, default='1')
     menor= models.CharField('Cantidad de Menores', max_length=2, choices=TIPO_MENOR, default='0')
     estado = models.BooleanField(default=True)  # my_boolean = forms.BooleanField(required=False, initial=True)
