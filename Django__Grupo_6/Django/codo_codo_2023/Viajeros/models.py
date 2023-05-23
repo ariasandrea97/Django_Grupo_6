@@ -100,14 +100,14 @@ class Reservas(models.Model):
     usuario = models.CharField(max_length=128, verbose_name="usuario ")
     #usuario = models.ForeignKey(User, null=True, blank= True, on_delete=models.CASCADE)
     Tipo_reserva = models.CharField('Tipo de reserva', max_length=15, choices=TIPO_CHOICES, default='Alojamiento')
-    #tipo_reserva = models.ForeignKey(Tipo_reserva, on_delete=models.CASCADE) # muchos a uno
+   
 
     adulto = models.CharField('Cantidad de Adultos', max_length=2, choices=TIPO_ADULTO, default='1')
     menor= models.CharField('Cantidad de Menores', max_length=2, choices=TIPO_MENOR, default='0')
     estado = models.BooleanField(default=True)  
     #hotel = models.ManyToManyField(Hotel)#, choices=TIPO_HOTEL) # Muchos a muchos
-    hotel = models.CharField(max_length=150, default=' ')
-
+    # hotel = models.CharField(max_length=150, default=' ')
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE, default=' ') # muchos a uno
 
 
     def __str__(self):

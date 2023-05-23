@@ -206,7 +206,7 @@ def mi_cuenta(request):
 ##############  HOTELES  ##########################################
 def detalle_hotel_Algodon(request):
     context = {}
-    servicios= Servicios.objects.filter(hotel__id=1)
+    servicios= Servicios.objects.filter(hotel__id=6)
     context['listado'] = servicios
 
     return render(request, 'Viajeros/paginas/detalle_hotel_Algodon.html', context)
@@ -215,7 +215,7 @@ def detalle_hotel_Algodon(request):
 
 def detalle_hotel_PuestaSol(request):
     context = {}
-    servicios= Servicios.objects.filter(hotel__id=2)
+    servicios= Servicios.objects.filter(hotel__id=5)
     context['listado'] = servicios
 
     return render(request, 'Viajeros/paginas/detalle_hotel_PuestaSol.html', context)
@@ -223,7 +223,7 @@ def detalle_hotel_PuestaSol(request):
 
 def detalle_hotel_Mendoza(request):
     context = {}
-    servicios= Servicios.objects.filter(hotel__id=3)
+    servicios= Servicios.objects.filter(hotel__id=4)
     context['listado'] = servicios
 
     return render(request, 'Viajeros/paginas/detalle_hotel_Mendoza.html', context)

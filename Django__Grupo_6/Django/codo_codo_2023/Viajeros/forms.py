@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Reservas, Hotel
+from .models import Reservas, Hotel, Servicios
 
 
 from django.contrib.auth.forms import UserCreationForm

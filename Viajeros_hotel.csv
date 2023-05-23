@@ -1,4 +1,4 @@
 "id","nombre_hotel","direccion","categoria"
-1,"HOTEL ALGODON WINE STATES","Dirección: RN 144, KM 144 – San Rafael, Mendoza, Argentina",4
-2,"PUESTA DEL SOL","Calle 20 de Junio 715 - San Rafael – Mendoza, Argentina",2
-3,"HOTEL MENDOZA","Av España 1210 – Mendoza, Argentina",3
+4,"HOTEL MENDOZA","Av España 1210 – Mendoza, Argentina.",3
+5,"PUESTA DEL SOL","Calle 20 de Junio 715 - San Rafael – Mendoza, Argentina.",3
+6,"HOTEL ALGODON WINE STATES","RN 144, KM 144 – San Rafael, Mendoza, Argentina",5
