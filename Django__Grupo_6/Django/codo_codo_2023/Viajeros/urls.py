@@ -28,6 +28,9 @@ urlpatterns = [
     path('mi_cuenta/', views.mi_cuenta, name="mi_cuenta"),
 
     path('enviar_reserva_hotel',views.enviar_reserva_hotel, name="enviar_reserva_hotel"),
+    path('detalle_hotel_Mendoza',views.detalle_hotel_Mendoza, name="detalle_hotel_Mendoza"),
+    path('detalle_hotel_PuestaSol',views.detalle_hotel_PuestaSol, name="detalle_hotel_PuestaSol"),
+    path('detalle_hotel_Algodon',views.detalle_hotel_Algodon, name="detalle_hotel_Algodon"),
 
 
 ]

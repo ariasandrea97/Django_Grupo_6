@@ -26,11 +26,11 @@
             <p><b>Adultos:</b>: {{reserva.adulto}}</p>
             <p><b>Menores:</b>: {{reserva.menor}}</p>
             <p><b>Tipo de reserva:</b>: {{reserva.Tipo_reserva}}</p>
-
+            <p><b>Hotel:</b>: {{reserva.hotel}}</p>
 
         </article>
         {% empty %}
-        
+            <p><b>No posee reservas registradas para este usuario</b>
         {% endfor %}
         </section>
 {% endblock %}

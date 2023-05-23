@@ -36,6 +36,13 @@ class Hotel(models.Model):
     def __str__(self):
 	    return self.nombre_hotel
 
+class Servicios(models.Model):
+    servicio = models.CharField(max_length=128)
+    hotel = models.ManyToManyField(Hotel)
+    
+    def __str__(self):
+	    return self.servicio
+
 
 # class Tipo_reserva(models.Model):
 #     nombre_reserva = models.CharField(max_length=50, unique=True)
@@ -98,7 +105,8 @@ class Reservas(models.Model):
     adulto = models.CharField('Cantidad de Adultos', max_length=2, choices=TIPO_ADULTO, default='1')
     menor= models.CharField('Cantidad de Menores', max_length=2, choices=TIPO_MENOR, default='0')
     estado = models.BooleanField(default=True)  
-    hotel = models.ManyToManyField(Hotel)#, choices=TIPO_HOTEL) # Muchos a muchos
+    #hotel = models.ManyToManyField(Hotel)#, choices=TIPO_HOTEL) # Muchos a muchos
+    hotel = models.CharField(max_length=150, default=' ')
 
 
 
