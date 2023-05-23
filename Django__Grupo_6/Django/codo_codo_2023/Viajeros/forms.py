@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Reservas #Usuario
+from .models import Reservas, Hotel
 
 
 from django.contrib.auth.forms import UserCreationForm
@@ -43,56 +43,64 @@ TYPE_RESERVA = [
 ]
 
 
-# class EnviarConsultaForm(forms.Form):
-#         nombre = forms.CharField(label="Nombre ",widget=forms.TextInput(), required=True)
-#         apellido = forms.CharField(label="Apellido ", required=True)
-#         mail = forms.EmailField(label="Mail", required=True)
-#         telefono = forms.CharField(label="Telefono", required=True)
-
-
-#         # fecha_ingreso = forms.DateField(
-#         #     widget=forms.SelectDateWidget(years=BIRTH_YEAR_CHOICES)
-#         # )
-#         tipo = forms.ChoiceField(
-#             label="Tipo de reserva",
-#             widget=forms.Select,
-#             choices=TYPE_RESERVA,
-#         )
-#         # Campo Fecha con date picker en el chrome.
-#         fecha_desde = forms.DateField(label="Fecha Desde", widget=forms.DateInput(attrs={'type': 'date'}))
-#         fecha_hasta = forms.DateField(label="Fecha Hasta", widget=forms.DateInput(attrs={'type': 'date'}))
-#         #validar que la fecha hasta sea mayor que la fecha desde
-
-#         adultos = forms.ChoiceField(
-#             label="Adultos",
-#             widget=forms.Select,
-#             choices=TYPE_CHOICES,
-#         )
-#         niños  = forms.ChoiceField(
-#             label="Niños",
-#             widget=forms.Select,
-#             choices=TYPE_CHOICES2,
-#         )
-
-#         mensaje = forms.CharField(widget=forms.Textarea)
-        
-#         # def clean(self):
-#         #     # Validación de fechas
-
-#         #     if self.fecha_desde >self.fecha_hasta :
-#         #         print('La fecha hasta debe ser mayor a la fecha de inicio')
-#         #         #raise forms.ValidationError("La fecha hasta debe ser mayor a la fecha de inicio")
-#         #         #raise ValidationError('La fecha hasta debe ser mayor a la fecha de inicio')
-
 class EnviarReservaForm(forms.ModelForm):
     fecha_desde = forms.DateField(label="Fecha Desde", widget=forms.DateInput(attrs={'type': 'date'}))
     fecha_hasta = forms.DateField(label="Fecha Hasta", widget=forms.DateInput(attrs={'type': 'date'}))
-#         
+    Tipo_reserva= "Excursion"
+
+    # hotel=forms.ModelChoiceField(queryset=Hotel.objects.order_by('id').values_list('nombre_hotel'))
+    # excursion=forms.ModelChoiceField(queryset=Excursion.objects.order_by('id').values_list('nombre_excursion'))
+
+    class Meta:
+        model = Reservas
+        fields= [ 'fecha_desde', 'fecha_hasta', 'adulto','menor']
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        fechaD = cleaned_data.get("fecha_desde")
+        fechaH = cleaned_data.get("fecha_hasta")
+
+        # print(cleaned_data)
+        if fechaD is not None and fechaH is not None and fechaD > fechaH:
+            raise ValidationError("La Fecha Hasta debe ser posterior a la Fecha Desde")
+        
+        return cleaned_data
+
+###########################################################################
+class EnviarReservaHotelForm(forms.ModelForm):  # para reserva de Hotel
+    fecha_desde = forms.DateField(label="Fecha Desde", widget=forms.DateInput(attrs={'type': 'date'}))
+    fecha_hasta = forms.DateField(label="Fecha Hasta", widget=forms.DateInput(attrs={'type': 'date'}))
+    # Tipo_reserva = forms.CharField('Tipo de reserva', value='Alojamiento')
+    # hotel=forms.ModelChoiceField(queryset=Hotel.objects.order_by('id').values_list('nombre_hotel'))
+    # excursion=forms.ModelChoiceField(queryset=Excursion.objects.order_by('id').values_list('nombre_excursion'))
+
+    
+    hotel=forms.ModelChoiceField(queryset=Hotel.objects.order_by('nombre_hotel'))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        fechaD = cleaned_data.get("fecha_desde")
+        fechaH = cleaned_data.get("fecha_hasta")
+
+        # print(cleaned_data)
+        if fechaD is not None and fechaH is not None and fechaD > fechaH:
+            raise ValidationError("La Fecha Hasta debe ser posterior a la Fecha Desde")
+    # return cleaned_data
+        
+    def clean_hotel(self):
+        hotel = self.cleaned_data['hotel']
+        print("hotel:", hotel)
+        return hotel
+
     class Meta:
         model = Reservas
 
-        fields= ['Tipo_reserva', 'fecha_desde', 'fecha_hasta', 'adulto','menor']
+        fields= [ 'fecha_desde', 'fecha_hasta', 'adulto','menor', 'hotel']
 
+        
+     
+
+######################################################################
 
 class AltaUsuarioForm(UserCreationForm):
 

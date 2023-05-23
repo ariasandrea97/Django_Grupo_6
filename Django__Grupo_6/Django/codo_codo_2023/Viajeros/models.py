@@ -1,39 +1,63 @@
 from django.db import models
 
+
 # Create your models here.
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 
 
-# usuarios/models.py
-# from django.contrib.auth.models import AbstractUser
 
+# class Usuario(models.Model):
+#     # username = None
+#     # # email = models.EmailField('email', unique=True)
+#     # nombre = models.CharField(max_length=50)
+#     # apellido = models.CharField(max_length=50)
+# #     is_staff = models.BooleanField(default=False)
+#     pass
 
-class Usuario(models.Model):
+#     #USERNAME_FIELD = 'email'
+#     REQUIRED_FIELDS = ['nombre', 'apellido', 'username']
+    
+#     def get_full_name(self):
+#         full_name = '%s %s' % (self.nombre, self.apellido)
+#         return full_name.strip()
 
-    nombre = models.CharField(max_length=128)
-    apellido = models.CharField(max_length=128)
-    mail =models.EmailField(max_length=128)
-    # first_name = models.CharField('Nombre', max_length=60)
-    # last_name = models.CharField('Apellidos', max_length=120)
-
-    def __str__(self):
-	    return self.mail
+#     def get_short_name(self):
+#         return self.nombre
+    
 
 
 class Hotel(models.Model):
     nombre_hotel = models.CharField(max_length=128, verbose_name="Hotel")
     direccion = models.CharField(max_length=128, verbose_name="Direccion")
     categoria = models.IntegerField(verbose_name="Categoria")
+    
+    def __str__(self):
+	    return self.nombre_hotel
 
+
+# class Tipo_reserva(models.Model):
+#     nombre_reserva = models.CharField(max_length=50, unique=True)
+
+#     def __str__(self):
+# 	    return self.nombre_reserva
 
 class Reservas(models.Model):
     TIPO_CHOICES = (
         ('Alojamiento', 'Alojamiento'),
         ('Excursion', 'Excursion'),
         ('Gastronomia', 'Gastronomia'),
-        # ('3', 'RECURSOS HUMANOS'),
-        # ('4', 'OTROS'),
+    )
+    # TIPO_HOTEL = (
+    #     ('1', 'Hotel Mendoza'),
+    #     ('2', 'Puesta del Sol'),
+    #     ('3', 'Hotel Algodon Wine States'),
+    # )
+    TIPO_EXCURSION = (
+        ('1', 'Cañon del Atuel'),
+        ('2', 'Villavicencio'),
+        ('3', 'Bodegas y Viñedos'),
     )
 
     TIPO_ADULTO = (
@@ -63,20 +87,21 @@ class Reservas(models.Model):
         ("10", "10"),
     )
 
+    fecha_registracion= models.DateField(null=True)
     fecha_desde = models.DateField(null=True)
     fecha_hasta = models.DateField(null=True)
-    # Tipo_reserva = models.CharField(max_length=128, verbose_name="Tipo")
-    # Cantidad_adultos= models.IntegerField(verbose_name="Cantidad de Adultos")
-    # Cantidad_menor= models.IntegerField(verbose_name="Cantidad de Menores")
     usuario = models.CharField(max_length=128, verbose_name="usuario ")
-    # hotel = models.OneToOneField(Hotel, on_delete=models.CASCADE)
+    #usuario = models.ForeignKey(User, null=True, blank= True, on_delete=models.CASCADE)
+    Tipo_reserva = models.CharField('Tipo de reserva', max_length=15, choices=TIPO_CHOICES, default='Alojamiento')
+    #tipo_reserva = models.ForeignKey(Tipo_reserva, on_delete=models.CASCADE) # muchos a uno
 
-    Tipo_reserva = models.CharField('Tipo de reserva', max_length=15, choices=TIPO_CHOICES)
     adulto = models.CharField('Cantidad de Adultos', max_length=2, choices=TIPO_ADULTO, default='1')
     menor= models.CharField('Cantidad de Menores', max_length=2, choices=TIPO_MENOR, default='0')
-    estado = models.BooleanField(default=True)  # my_boolean = forms.BooleanField(required=False, initial=True)
-    # hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-    # usuario = models.ForeignKey(User, on_delete=models.CASCADE)  # 1 usuario puede tener muchas reservas
+    estado = models.BooleanField(default=True)  
+    hotel = models.ManyToManyField(Hotel)#, choices=TIPO_HOTEL) # Muchos a muchos
 
 
+
+    def __str__(self):
+	    return self.hotel
  

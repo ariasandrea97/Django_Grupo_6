@@ -27,5 +27,7 @@ urlpatterns = [
     path('enviar_consulta',views.enviar_consulta, name="enviar_consulta"),
     path('mi_cuenta/', views.mi_cuenta, name="mi_cuenta"),
 
+    path('enviar_reserva_hotel',views.enviar_reserva_hotel, name="enviar_reserva_hotel"),
+
 
 ]

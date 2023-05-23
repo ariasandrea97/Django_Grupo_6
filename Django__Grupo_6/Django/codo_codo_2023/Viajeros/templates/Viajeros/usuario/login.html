@@ -9,12 +9,13 @@
 
 {% block contenido %}
 
-<div class="card bg-dark text-white w-50">
+<div class="card bg-dark text-white w-50"> <!-- w-50 -->
     
     <img src="{% static 'Viajeros/img/vinos.jpg'%}" class="card-img" alt="...">
    
     <h1 class="card-img-overlay text-center" >"Bienvenido - Inicia Tu Sesión"</h1>
- 
+</div>
+
     <form method="post">
         {% csrf_token %}
         
@@ -25,7 +26,7 @@
     </form>
     <p>Si aún no tienes una cuenta ingresa aqui: </p> <a href="{% url 'registro' %}" > Registrar </a> 
 
-<div>
+
 
 {% endblock %}
 
