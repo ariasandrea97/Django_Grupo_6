@@ -113,3 +113,126 @@ class Reservas(models.Model):
     def __str__(self):
 	    return self.hotel
  
+##########################################
+ # Modelo Restaurantes
+
+class Restaurante(models.Model):
+    nombre_restaurante = models.CharField(max_length=128, verbose_name="Restaurante")
+    direccion = models.CharField(max_length=128, verbose_name="Direccion")
+    categoria = models.IntegerField(verbose_name="Categoria")
+    detalle = models.CharField(max_length=1024, null=True, verbose_name="Detalle")
+    
+    def __str__(self):
+	    return self.nombre_restaurante
+
+
+class ReservaRestaurante(models.Model):
+    TIPO_CHOICES = (
+        ('Alojamiento', 'Alojamiento'),
+        ('Excursion', 'Excursion'),
+        ('Gastronomia', 'Gastronomia'),
+    )
+
+    TIPO_ADULTO = (
+    ("1", "1"),
+    ("2", "2"),
+    ("3", "3"),
+    ("4", "4"),
+    ("5", "5"),
+    ("6", "6"),
+    ("7", "7"),
+    ("8", "8"),
+    ("9", "9"),
+    ("10", "10"),
+    )
+
+    TIPO_MENOR = (
+        ("0", "0"),
+        ("1", "1"),
+        ("2", "2"),
+        ("3", "3"),
+        ("4", "4"),
+        ("5", "5"),
+        ("6", "6"),
+        ("7", "7"),
+        ("8", "8"),
+        ("9", "9"),
+        ("10", "10"),
+    )
+
+    fecha_registracion= models.DateField(null=True)
+    fecha_reserva = models.DateField(null=True)
+    usuario = models.CharField(max_length=128, verbose_name="usuario ")
+    Tipo_reserva = models.CharField('Tipo de reserva', max_length=15, choices=TIPO_CHOICES, default='Gastronomia')
+   
+    adulto = models.CharField('Cantidad de Adultos', max_length=2, choices=TIPO_ADULTO, default='1')
+    menor= models.CharField('Cantidad de Menores', max_length=2, choices=TIPO_MENOR, default='0')
+    estado = models.BooleanField(default=True)  
+    restaurante = models.ForeignKey(Restaurante, on_delete=models.CASCADE, default=' ') # muchos a uno
+
+    def __str__(self):
+	    return self.restaurante
+ 
+ #######################################
+ # Modelo Excursiones
+
+class Excursion(models.Model):
+    excursion = models.CharField(max_length=128, verbose_name="Restaurante")
+    detalle = models.CharField(max_length=1024, verbose_name="Detalle")
+    diasSalidas = models.CharField(max_length=1024, verbose_name="Dias Salidas")
+    duracion = models.CharField(max_length=10, verbose_name="Duracion")
+    horario = models.CharField(max_length=20, verbose_name="Horarios")
+    
+    def __str__(self):
+	    return self.excursion
+
+class ReservaExcursion(models.Model):
+    TIPO_CHOICES = (
+        ('Alojamiento', 'Alojamiento'),
+        ('Excursion', 'Excursion'),
+        ('Gastronomia', 'Gastronomia'),
+    )
+
+    TIPO_ADULTO = (
+    ("1", "1"),
+    ("2", "2"),
+    ("3", "3"),
+    ("4", "4"),
+    ("5", "5"),
+    ("6", "6"),
+    ("7", "7"),
+    ("8", "8"),
+    ("9", "9"),
+    ("10", "10"),
+    )
+
+    TIPO_MENOR = (
+        ("0", "0"),
+        ("1", "1"),
+        ("2", "2"),
+        ("3", "3"),
+        ("4", "4"),
+        ("5", "5"),
+        ("6", "6"),
+        ("7", "7"),
+        ("8", "8"),
+        ("9", "9"),
+        ("10", "10"),
+    )
+
+    fecha_registracion= models.DateField(null=True)
+    fecha_reserva = models.DateField(null=True)
+    hora_reserva =  models.TimeField(null=True)
+    usuario = models.CharField(max_length=128, verbose_name="usuario ")
+    Tipo_reserva = models.CharField('Tipo de reserva', max_length=15, choices=TIPO_CHOICES, default='Excursion')
+   
+    adulto = models.CharField('Cantidad de Adultos', max_length=2, choices=TIPO_ADULTO, default='1')
+    menor= models.CharField('Cantidad de Menores', max_length=2, choices=TIPO_MENOR, default='0')
+    estado = models.BooleanField(default=True)  
+    traslado = models.BooleanField(default=True)  
+    excursion = models.ForeignKey(Excursion, on_delete=models.CASCADE, default=' ') # muchos a uno
+
+    def __str__(self):
+	    return self.excursion
+ 
+ 

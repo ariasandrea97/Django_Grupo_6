@@ -78,7 +78,9 @@
                     {% else %}
                       <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'mi_cuenta' %}">Mi cuenta</a></li>
-                        <li><a class="dropdown-item" href="{% url 'listar_reservas' %}">Consultar reservas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'listar_reservas' %}">Consultar reservas Hotel</a></li>
+                        <li><a class="dropdown-item" href="{% url 'listar_reservas_gastronomia' %}">Consultar reservas Gastronomia</a></li>
+                        <li><a class="dropdown-item" href="{% url 'listar_reservas_excursiones' %}">Consultar reservas Excursiones</a></li>
                       </ul> 
 
                     {% endif %} 

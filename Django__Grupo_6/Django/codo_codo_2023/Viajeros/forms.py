@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Reservas, Hotel, Servicios
+from .models import Reservas, Hotel, Servicios, Restaurante, ReservaRestaurante, Excursion, ReservaExcursion
 
 
 from django.contrib.auth.forms import UserCreationForm
@@ -123,3 +123,63 @@ class AltaUsuarioForm(UserCreationForm):
             User.objects.filter(email = email_passed).delete()
 
         return email_passed
+    
+    ##################################
+    
+class EnviarReservaRestauranteForm(forms.ModelForm):  # para reserva gastronomia (restaurante)
+    fecha_reserva = forms.DateField(label="Fecha reserva", widget=forms.DateInput(attrs={'type': 'date'}))
+    hora_reserva = forms.TimeField(label="Hora Reserva", widget=forms.TimeInput(attrs={'type': 'time'}))
+    #Tipo_reserva = forms.CharField('Tipo de reserva', value='Gastronomia')
+    # hotel=forms.ModelChoiceField(queryset=Hotel.objects.order_by('id').values_list('nombre_hotel'))
+    # excursion=forms.ModelChoiceField(queryset=Excursion.objects.order_by('id').values_list('nombre_excursion'))
+    adulto = forms.IntegerField(label='Cantidad de Adultos',required=True, initial=1, widget=forms.NumberInput(attrs={'type': 'number'}))
+    menor= forms.IntegerField(label='Cantidad de Menores', required=True, initial=0, widget=forms.NumberInput(attrs={'type': 'number'}))
+    
+    restaurante=forms.ModelChoiceField(queryset=Restaurante.objects.order_by('nombre_restaurante'))
+
+        
+    def clean_restaurante(self):
+        restaurante = self.cleaned_data['restaurante']
+        print("restaurante:", restaurante)
+        return restaurante
+
+    class Meta:
+        model = ReservaRestaurante
+
+        fields= [ 'fecha_reserva', 'hora_reserva', 'adulto','menor', 'restaurante']
+
+
+class EnviarReservaExcursionForm(forms.ModelForm):  # para reserva gastronomia (restaurante)
+    fecha_reserva = forms.DateField(label="Fecha reserva", widget=forms.DateInput(attrs={'type': 'date'}))
+    hora_reserva = forms.TimeField(label="Hora Reserva", widget=forms.TimeInput(attrs={'type': 'time'}))
+    #Tipo_reserva = forms.CharField('Tipo de reserva', value='Gastronomia')
+    # hotel=forms.ModelChoiceField(queryset=Hotel.objects.order_by('id').values_list('nombre_hotel'))
+    # excursion=forms.ModelChoiceField(queryset=Excursion.objects.order_by('id').values_list('nombre_excursion'))
+    adulto = forms.IntegerField(label='Cantidad de Adultos',widget=forms.NumberInput(attrs={'type': 'number'}))
+    menor= forms.IntegerField(label='Cantidad de Menores', widget=forms.NumberInput(attrs={'type': 'number'}))
+    traslado = forms.BooleanField(label="Requiere traslado",required=False,initial=False)  
+
+    
+    excursion=forms.ModelChoiceField(queryset=Excursion.objects.order_by('excursion'))
+        
+    def clean_excursion(self):
+        excursion = self.cleaned_data['excursion']
+        print("excursion:", excursion)
+        return excursion
+
+    class Meta:
+        model = ReservaExcursion
+
+        fields= [ 'fecha_reserva', 'hora_reserva', 'adulto','menor', 'traslado','excursion']
+'''
+    fecha_reserva = models.DateField(null=True)
+    hora_reserva =  models.TimeField(null=True)
+    usuario = models.CharField(max_length=128, verbose_name="usuario ")
+    Tipo_reserva = models.CharField('Tipo de reserva', max_length=15, choices=TIPO_CHOICES, default='Excursion')
+   
+    adulto = models.CharField('Cantidad de Adultos', max_length=2, choices=TIPO_ADULTO, default='1')
+    menor= models.CharField('Cantidad de Menores', max_length=2, choices=TIPO_MENOR, default='0')
+    estado = models.BooleanField(default=True)  
+    traslado = models.BooleanField(default=True)  
+    excursion = models.ForeignKey(Excursion, on_delete=models.CASCADE, default=' ') # muchos a uno
+    '''

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound
 
 #
-from .models import Reservas, Servicios, Hotel, User
+from .models import ReservaExcursion, ReservaRestaurante, Reservas, Servicios, Hotel, User
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -12,7 +12,7 @@ import datetime
 
 
 #Definicion de los formularios:
-from .forms import EnviarReservaForm, AltaUsuarioForm, EnviarReservaHotelForm
+from .forms import EnviarReservaForm, AltaUsuarioForm, EnviarReservaHotelForm, EnviarReservaRestauranteForm, EnviarReservaExcursionForm
 
 
 
@@ -227,3 +227,67 @@ def detalle_hotel_Mendoza(request):
     context['listado'] = servicios
 
     return render(request, 'Viajeros/paginas/detalle_hotel_Mendoza.html', context)
+
+######################################
+
+def enviar_reserva_restaurante(request):    # guarda reserva en la tabla Reservas
+    context={}
+    if request.method == "POST":
+        form = EnviarReservaRestauranteForm(request.POST)
+        if form.is_valid():
+            # print("form.cleaned_data[hotel]",form.cleaned_data["hotel"])
+            alta_reserva_restaurante = form.save(commit=False)
+            alta_reserva_restaurante.usuario= request.user
+            alta_reserva_restaurante.Tipo_reserva= "Restaurante"
+            alta_reserva_restaurante.fecha_registracion= datetime.date.today()
+
+            alta_reserva_restaurante.save()  #guardamos la reserva
+            messages.add_message(request, messages.SUCCESS, 'Reserva enviada con exito', extra_tags="tag1")
+            return render(request, 'Viajeros/index.html', context)
+
+    else:
+        # GET
+        form = EnviarReservaRestauranteForm()
+
+    context = {'form': form}
+    return render(request, 'Viajeros/paginas/enviar_reserva_restaurante.html', context)
+
+###
+
+def enviar_reserva_excursion(request):    # guarda reserva en la tabla Reservas
+    context={}
+    if request.method == "POST":
+        form = EnviarReservaExcursionForm(request.POST)
+        if form.is_valid():
+            # print("form.cleaned_data[hotel]",form.cleaned_data["hotel"])
+            alta_reserva_excursion = form.save(commit=False)
+            alta_reserva_excursion.usuario= request.user
+            alta_reserva_excursion.Tipo_reserva= "Excursion"
+            alta_reserva_excursion.fecha_registracion= datetime.date.today()
+
+            alta_reserva_excursion.save()  #guardamos la reserva
+            messages.add_message(request, messages.SUCCESS, 'Reserva enviada con exito', extra_tags="tag1")
+            return render(request, 'Viajeros/index.html', context)
+
+    else:
+        # GET
+        form = EnviarReservaExcursionForm()
+
+    context = {'form': form}
+    return render(request, 'Viajeros/paginas/enviar_reserva_excursion.html', context)
+
+def listar_reservas_gastronomia(request):
+    context = {}
+    listado = ReservaRestaurante.objects.filter(usuario=request.user)
+    context['listado_reservas_gastronomia'] = listado
+
+    return render(request, 'Viajeros/paginas/mis_reservas_gastronomia.html', context)
+
+def listar_reservas_excursiones(request):
+    context = {}
+    listado = ReservaExcursion.objects.filter(usuario=request.user)
+    context['listado_reservas_excursiones'] = listado
+
+    return render(request, 'Viajeros/paginas/mis_reservas_excursiones.html', context)
+
+

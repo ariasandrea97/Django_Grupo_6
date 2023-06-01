@@ -32,5 +32,9 @@ urlpatterns = [
     path('detalle_hotel_PuestaSol',views.detalle_hotel_PuestaSol, name="detalle_hotel_PuestaSol"),
     path('detalle_hotel_Algodon',views.detalle_hotel_Algodon, name="detalle_hotel_Algodon"),
 
+    path('enviar_reserva_restaurante',views.enviar_reserva_restaurante, name="enviar_reserva_restaurante"),
+    path('enviar_reserva_excursion',views.enviar_reserva_excursion, name="enviar_reserva_excursion"),
+    path('listar_reservas_gastronomia/', views.listar_reservas_gastronomia, name="listar_reservas_gastronomia"),
+    path('listar_reservas_excursiones/', views.listar_reservas_excursiones, name="listar_reservas_excursiones"),
 
 ]
