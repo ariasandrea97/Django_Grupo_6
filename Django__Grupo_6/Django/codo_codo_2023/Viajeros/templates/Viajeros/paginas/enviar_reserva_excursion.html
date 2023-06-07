@@ -18,7 +18,7 @@
         <h1>Ingrese los datos para la reserva de Excursiones</h1>
         <p><b>Tipo de reserva:</b>: Excursion</p>
         
-        <form action="{% url 'enviar_reserva_excursion' %}" method="POST">
+        <form class="mi-formulario" action="{% url 'enviar_reserva_excursion' %}" method="POST">
           {% csrf_token %}
           {{form.as_p}}
           <input type="submit" class="btn btn-primary" value="ENVIAR RESERVA">

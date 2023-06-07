@@ -8,6 +8,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 
 
+
 urlpatterns = [
     path('', views.index, name="index"),
 
@@ -24,17 +25,22 @@ urlpatterns = [
 
 
     path('listar_reservas/', views.listar_reservas, name="listar_reservas"),
-    path('enviar_consulta',views.enviar_consulta, name="enviar_consulta"),
+    # path('enviar_consulta',views.enviar_consulta, name="enviar_consulta"),
     path('mi_cuenta/', views.mi_cuenta, name="mi_cuenta"),
 
-    path('enviar_reserva_hotel',views.enviar_reserva_hotel, name="enviar_reserva_hotel"),
+    
     path('detalle_hotel_Mendoza',views.detalle_hotel_Mendoza, name="detalle_hotel_Mendoza"),
     path('detalle_hotel_PuestaSol',views.detalle_hotel_PuestaSol, name="detalle_hotel_PuestaSol"),
     path('detalle_hotel_Algodon',views.detalle_hotel_Algodon, name="detalle_hotel_Algodon"),
-
+    
+    path('enviar_reserva_hotel',views.enviar_reserva_hotel, name="enviar_reserva_hotel"),
     path('enviar_reserva_restaurante',views.enviar_reserva_restaurante, name="enviar_reserva_restaurante"),
     path('enviar_reserva_excursion',views.enviar_reserva_excursion, name="enviar_reserva_excursion"),
-    path('listar_reservas_gastronomia/', views.listar_reservas_gastronomia, name="listar_reservas_gastronomia"),
-    path('listar_reservas_excursiones/', views.listar_reservas_excursiones, name="listar_reservas_excursiones"),
+    # path('listar_reservas_gastronomia/', views.listar_reservas_gastronomia, name="listar_reservas_gastronomia"),
+    # path('listar_reservas_excursiones/', views.listar_reservas_excursiones, name="listar_reservas_excursiones"),
+
+    # path('reserva/', views.reserva, name='reserva'),
+    # path('buscar_reservas/', views.buscar_reservas, name='buscar_reservas'),
+ 
 
 ]

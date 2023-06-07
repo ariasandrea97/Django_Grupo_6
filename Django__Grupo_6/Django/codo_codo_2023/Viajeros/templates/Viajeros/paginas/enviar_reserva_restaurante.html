@@ -18,7 +18,7 @@
         <h1>Ingrese los datos para la reserva de Gastronomia</h1>
         <p><b>Tipo de reserva:</b>: Gastronomia</p>
         
-        <form action="{% url 'enviar_reserva_restaurante' %}" method="POST">
+        <form class="mi-formulario" action="{% url 'enviar_reserva_restaurante' %}" method="POST">
           {% csrf_token %}
           {{form.as_p}}
           <input type="submit" class="btn btn-primary" value="ENVIAR RESERVA">
