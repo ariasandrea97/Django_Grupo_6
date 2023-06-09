@@ -43,19 +43,36 @@ class Hotel(models.Model):
     nombre_hotel = models.CharField(max_length=128, verbose_name="Hotel")
     direccion = models.CharField(max_length=128, verbose_name="Direccion")
     categoria = models.IntegerField(verbose_name="Categoria")
+    # nuevos campos #
+    descripcion = models.TextField(default='')
+    #descripcion =models.CharField(max_length=500, verbose_name="Descripcion")
+    imagen = models.ImageField(upload_to='hoteles', default='default_image.jpg')
+   # imagen = models.ImageField(upload_to='hoteles', null=True)
+    servicios = models.ManyToManyField('Servicio') #permite que un hotel tenga varios servicios y un servicio pueda estar asociado a varios hoteles.
+
     
     def __str__(self):
-	    return self.nombre_hotel
+	    # return self.nombre_hotel
+        return f"{self.nombre_hotel}"
+
+
+class Servicio(models.Model):
+    nombre = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.nombre
 
 class Servicios(models.Model):
     class Meta: 
         verbose_name_plural = "Servicios"
 
     servicio = models.CharField(max_length=128)
-    hotel = models.ManyToManyField(Hotel)
+   # hotel = models.ManyToManyField(Hotel)
     
     def __str__(self):
 	    return self.servicio
+
+
 
 
 class Restaurante(models.Model):

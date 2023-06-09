@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseNotFound
-
+from . import views
 #
 
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
@@ -13,14 +13,44 @@ from django.contrib.auth.decorators import login_required
 
 
 #Definicion de los formularios:
-# from .forms import EnviarReservaForm 
+from .forms import EnviarConsultaForm
 from .forms import EnviarReservaHotelForm, EnviarReservaRestauranteForm, EnviarReservaExcursionForm, ConsultaReservasForm
 from .forms import AltaUsuarioForm
-from .models import ReservaExcursion, ReservaRestaurante, Reservas, Servicios, Hotel, User
+from .models import ReservaExcursion, ReservaRestaurante, Reservas,  Hotel, Excursion, Restaurante, User
+#from .models import Servicios
+#from .forms import HotelForm
 
 
 def index(request):
-    # Hagamos de cuenta que este dato viene de la BBDD
+    hotel = Hotel.objects.all()
+    excursion = Excursion.objects.all()
+    restaurante = Restaurante.objects.all()
+    carousel_images = hotel  # Por ejemplo, se utilizan las imágenes de los hoteles para el carrousel
+
+    context = {
+        'carousel_images': carousel_images,
+        'hotel': hotel,
+        'excursion': excursion,
+        'restaurante': restaurante,
+    }
+
+    return render(request, 'Viajeros/index.html', context)
+  
+
+# def index(request):
+#     # Hagamos de cuenta que este dato viene de la BBDD
+#     hotel = Hotel.objects.all()
+#     excursion = Excursion.objects.all()
+#     restaurante = Restaurante.objects.all()
+#     carousel_images = hotel  # Por ejemplo, se utilizan las imágenes de los hoteles para el carrousel
+
+#     context = {
+#         'carousel_images': carousel_images,
+#         'hotel': hotel,
+#         'excursion': excursion,
+#         'restaurante': restaurante,
+#     }
+
 
     # usuario = {
     #     'nombre': 'Maria',
@@ -50,17 +80,15 @@ def index(request):
     #     },
     # ]
 
-    context = {
-        # 'first_name': 'Carlos',
-        # 'last_name': 'Lopez',
-     #   'usuario': usuario,
-        #'usuario': usuario_ficticio,
-      #  'listado_usuarios': listado_usuarios
-    }
+    # context = {
+    #     # 'first_name': 'Carlos',
+    #     # 'last_name': 'Lopez',
+    #  #   'usuario': usuario,
+    #     #'usuario': usuario_ficticio,
+    #   #  'listado_usuarios': listado_usuarios
+    # }
 
-    return render(request, 'Viajeros/index.html', context)
-
-
+    # return render(request, 'Viajeros/index.html', context)
 
 
 def baja_persona(request):
@@ -68,13 +96,84 @@ def baja_persona(request):
     return render(request, 'Viajeros/baja_persona.html', context)
 
 ####################  PAGINAS ##########################################
+
 def nosotros(request):
     context={}
     return render(request, 'Viajeros/paginas/nosotros.html', context)
 
+
+def enviar_consulta(request):    
+    if request.method == 'POST':
+        form = EnviarConsultaForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            message = form.cleaned_data['message']
+            messages.add_message(request, messages.SUCCESS, 'Tu mensaje ha sido enviado correctamente. Nos pondremos en contacto contigo pronto.', extra_tags="tag1")
+            return render(request, 'Viajeros/index.html')
+            #return render(request, 'Viajeros/paginas/success.html')
+    else:
+        form = EnviarConsultaForm()
+    return render(request, 'Viajeros/paginas/enviar_consulta.html', {'form': form})
+
+
+# def contact_view(request):
+#     if request.method == 'POST':
+#         form = ContactForm(request.POST)
+#         if form.is_valid():
+#             name = form.cleaned_data['name']
+#             email = form.cleaned_data['email']
+#             message = form.cleaned_data['message']
+#             # Aquí puedes agregar la lógica para enviar el correo o guardar el mensaje en la base de datos
+#             # Por ejemplo, podrías utilizar Django's EmailMessage para enviar el correo
+#             # o crear un modelo de "Mensaje de contacto" para guardar los mensajes en la base de datos
+#             # ...
+#             return render(request, 'contact/success.html')
+#     else:
+#         form = ContactForm()
+    
+#     return render(request, 'contact/contact.html', {'form': form})
+
+
+#########################################################
+# def alojamiento(request):
+#     context={}
+#     return render(request, 'Viajeros/paginas/alojamiento.html', context)
+
 def alojamiento(request):
-    context={}
-    return render(request, 'Viajeros/paginas/alojamiento.html', context)
+    hoteles = Hotel.objects.all()
+    return render(request, 'Viajeros/paginas/alojamiento.html', {'hoteles': hoteles})
+
+# def lista_hoteles(request):
+#     hoteles = Hotel.objects.all()
+#     return render(request, 'Viajeros/paginas/lista_hoteles.html', {'hoteles': hoteles})
+
+def detalles_hotel(request, hotel_id):
+    print("def detalles_hotel", hotel_id)
+    hotel = get_object_or_404(Hotel, id=hotel_id)  #para recuperar el objeto Hotel correspondiente al hotel_id proporcionado
+    # servicios= Servicios.objects.filter(hotel__id=hotel_id)
+    # context['listado'] = servicios
+    # context = {}
+    # hotel = Hotel.objects.get(id=hotel_id)
+    # context['listado'] =hotel
+    print("hotel: ", hotel)
+    context = {'hotel': hotel, 'imagen_url': hotel.imagen.url}
+   # return render(request, 'Viajeros/paginas/detalles_hotel.html', {'hotel': hotel})
+    return render(request, 'Viajeros/paginas/detalles_hotel.html',  context)
+
+# def crear_hotel(request):
+#     if request.method == 'POST':
+#         form = HotelForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('lista_hoteles')
+#     else:
+#         form = HotelForm()
+    
+#     return render(request, 'crear_hotel.html', {'form': form})
+
+
+
 
 def gastronomia(request):
     context={}
@@ -118,7 +217,6 @@ def registro(request):
 
 
 ############    LOGIN / LOGOUT  #####################
-
 def login_request(request):
     if request.method == "POST":
         form = AuthenticationForm(request, data= request.POST)
@@ -135,7 +233,11 @@ def login_request(request):
     form = AuthenticationForm()
     return render(request, 'Viajeros/usuario/login.html',{"form": form}) 
 
-##
+
+
+
+
+#####################################################################
 def logout_request(request):
     logout(request)
     messages.info(request,"Sesion finalizada")
@@ -148,55 +250,35 @@ def mi_cuenta(request):
     return render(request, 'Viajeros/paginas/mi_cuenta.html', context)
 
 ##############  HOTELES  ##########################################
-def detalle_hotel_Algodon(request):
-    context = {}
-    servicios= Servicios.objects.filter(hotel__id=6)
-    context = {
-        'listado' : servicios,
-        'tipo_reservas' : 'hotel'
-        }
+# def detalle_hotel_Algodon(request):
+#     context = {}
+#     servicios= Servicios.objects.filter(hotel__id=6)
+#     context = {
+#         'listado' : servicios,
+#         'tipo_reservas' : 'hotel'
+#         }
 
-    return render(request, 'Viajeros/paginas/detalle_hotel_Algodon.html', context)
-
-
-def detalle_hotel_PuestaSol(request):
-    context = {}
-    servicios= Servicios.objects.filter(hotel__id=5)
-    context['listado'] = servicios
-
-    return render(request, 'Viajeros/paginas/detalle_hotel_PuestaSol.html', context)
+#     return render(request, 'Viajeros/paginas/detalle_hotel_Algodon.html', context)
 
 
-def detalle_hotel_Mendoza(request):
-    context = {}
-    servicios= Servicios.objects.filter(hotel__id=4)
-    context['listado'] = servicios
+# def detalle_hotel_PuestaSol(request):
+#     context = {}
+#     servicios= Servicios.objects.filter(hotel__id=5)
+#     context['listado'] = servicios
 
-    return render(request, 'Viajeros/paginas/detalle_hotel_Mendoza.html', context)
+#     return render(request, 'Viajeros/paginas/detalle_hotel_PuestaSol.html', context)
 
 
-#######################   ##################################
-# def enviar_consulta(request):    # guarda reserva en la tabla Reservas
-#     context={}
-#     if request.method == "POST":
-#         form = EnviarReservaForm(request.POST)
-#         if form.is_valid():
-#             # print(request.user)
-#             alta_reserva = form.save(commit=False)
-#             alta_reserva.usuario= request.user
-#             # alta_reserva.Tipo_reserva= "Excursion"
-#             alta_reserva.save()  #guardamos la reserva
-#             messages.add_message(request, messages.SUCCESS, 'Consulta enviada con exito', extra_tags="tag1")
-#             return render(request, 'Viajeros/index.html', context)
+# def detalle_hotel_Mendoza(request):
+#     context = {}
+#     servicios= Servicios.objects.filter(hotel__id=4)
+#     context['listado'] = servicios
 
-#     else:
-#         # GET
-#         form = EnviarReservaForm()
+#     return render(request, 'Viajeros/paginas/detalle_hotel_Mendoza.html', context)
 
-#     context = {'form': form}
-#     return render(request, 'Viajeros/paginas/enviar_consulta.html', context)
+###############################################################################################
 
-#########################################################
+
 #@login_required
 def enviar_reserva_hotel(request):    # guarda reserva en la tabla Reservas
     context={}

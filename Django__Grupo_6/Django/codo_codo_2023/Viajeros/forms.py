@@ -1,33 +1,27 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Reservas, Hotel, Servicios, Restaurante, ReservaRestaurante, Excursion, ReservaExcursion
-
+from .models import Reservas, Hotel,  Restaurante, ReservaRestaurante, Excursion, ReservaExcursion
+#from .models import Servicios
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
 
+# class HotelForm(forms.ModelForm):
+#     class Meta:
+#         model = Hotel
+#         fields = ['nombre', 'ubicacion', 'descripcion', 'imagen', 'servicios']
 
-# class EnviarReservaForm(forms.ModelForm):
+
+class EnviarConsultaForm(forms.Form):
 #     fecha_desde = forms.DateField(label="Fecha Desde", widget=forms.DateInput(attrs={'type': 'date'}))
 #     fecha_hasta = forms.DateField(label="Fecha Hasta", widget=forms.DateInput(attrs={'type': 'date'}))
 
+    name = forms.CharField(label='Nombre', max_length=100)
+    email = forms.EmailField(label='Email')
+    message = forms.CharField(label='Mensaje', widget=forms.Textarea)
 
-#     class Meta:
-#         model = Reservas
-#         fields= [ 'fecha_desde', 'fecha_hasta', 'adulto','menor']
-    
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         fechaD = cleaned_data.get("fecha_desde")
-#         fechaH = cleaned_data.get("fecha_hasta")
-
-#         # print(cleaned_data)
-#         if fechaD is not None and fechaH is not None and fechaD > fechaH:
-#             raise ValidationError("La Fecha Hasta debe ser posterior a la Fecha Desde")
-        
-#         return cleaned_data
 
 ###########################  Formularios para reservas  ################################################
 class EnviarReservaHotelForm(forms.ModelForm):  # para reserva de Hotel

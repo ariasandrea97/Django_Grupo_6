@@ -14,22 +14,24 @@
 
 {% block contenido %}
 
-      {% if user.is_authenticated %}
-        <h1>Ingrese los datos para la reserva</h1>
-        <p><b>Tipo de reserva:</b>: Excursion</p>
+      <!-- {% if user.is_authenticated %} -->
+        <h2>FORMULARIO DE CONSULTA</h2>
+        <br>
 
         <form action="{% url 'enviar_consulta' %}" method="POST">
           {% csrf_token %}
           {{form.as_p}}
-          <input type="submit" class="btn btn-primary" value="ENVIAR RESERVA">
-      </form>
+          <br>
+          <input type="submit" class="btn btn-primary" value="ENVIAR CONSULTA">
+          <br> 
+       </form>
 
-      {% else %}
+      <!-- {% else %}
         <h2> Por favor ingrese con su usuario y contraseña antes de realizar la reserva</h2>
-        <a href="{% url 'login' %}" class="btn btn-primary" > Continuar</a>
+        <a href="{% url 'login' %}" class="btn btn-primary" > Continuar</a> -->
 
       {% endif %}
-
+  <br>
   {% endblock %}
 
 

@@ -1,9 +1,13 @@
-from django.urls import path, re_path
+from django.urls import path, re_path , include
 from . import views
 
 #from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LoginView, LogoutView
+
+#from .views import lista_hoteles,
+# from .views import detalles_hotel
+from django.conf import settings
 
 
 
@@ -11,28 +15,31 @@ from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('', views.index, name="index"),
+  #  path('accounts/', include('django.contrib.auth.urls')),
 
     path('nosotros/', views.nosotros, name="nosotros"),
+    path('enviar_consulta',views.enviar_consulta, name="enviar_consulta"),
+    # path('alojamiento/', lista_hoteles, name="alojamiento"),
     path('alojamiento/', views.alojamiento, name="alojamiento"),
+    path('hoteles/<int:hotel_id>/detalles/', views.detalles_hotel, name='detalles_hotel'),
+
     path('gastronomia/', views.gastronomia, name="gastronomia"),
     path('circuito_turistico/', views.circuito_turistico, name="circuito_turistico"),
     path('ruta_del_vino/', views.ruta_del_vino, name="ruta_del_vino"),
     
- 
     path('registro/', views.registro, name="registro"),
     path('logout/', views.logout_request, name="logout"),
     path('login/', views.login_request, name="login"),
 
 
     path('listar_reservas/', views.listar_reservas, name="listar_reservas"),
-    # path('enviar_consulta',views.enviar_consulta, name="enviar_consulta"),
     path('mi_cuenta/', views.mi_cuenta, name="mi_cuenta"),
 
     
-    path('detalle_hotel_Mendoza',views.detalle_hotel_Mendoza, name="detalle_hotel_Mendoza"),
-    path('detalle_hotel_PuestaSol',views.detalle_hotel_PuestaSol, name="detalle_hotel_PuestaSol"),
-    path('detalle_hotel_Algodon',views.detalle_hotel_Algodon, name="detalle_hotel_Algodon"),
-    
+    # path('detalle_hotel_Mendoza',views.detalle_hotel_Mendoza, name="detalle_hotel_Mendoza"),
+    # path('detalle_hotel_PuestaSol',views.detalle_hotel_PuestaSol, name="detalle_hotel_PuestaSol"),
+    # path('detalle_hotel_Algodon',views.detalle_hotel_Algodon, name="detalle_hotel_Algodon"),
+
     path('enviar_reserva_hotel',views.enviar_reserva_hotel, name="enviar_reserva_hotel"),
     path('enviar_reserva_restaurante',views.enviar_reserva_restaurante, name="enviar_reserva_restaurante"),
     path('enviar_reserva_excursion',views.enviar_reserva_excursion, name="enviar_reserva_excursion"),
@@ -42,5 +49,9 @@ urlpatterns = [
     # path('reserva/', views.reserva, name='reserva'),
     # path('buscar_reservas/', views.buscar_reservas, name='buscar_reservas'),
  
+    # path('hoteles/', lista_hoteles, name='lista_hoteles'),
+    
 
-]
+
+   
+] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

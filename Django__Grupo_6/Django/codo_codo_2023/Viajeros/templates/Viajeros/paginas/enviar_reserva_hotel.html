@@ -22,36 +22,8 @@
         <form class="mi-formulario" action="{% url 'enviar_reserva_hotel' %}" method="POST">
           <p><b>Tipo de reserva:</b>:  Alojamiento </p>
           {% csrf_token %}
-           <!-- {{form.as_p}} -->
-
-          <!-- <div id="hotel-fields" style="display: none;">   -->
-            
-            {{form.as_p}} 
-            <!-- {{ form.hotel }}
-            {{ form.fecha_desde }}
-            {{ form.fecha_hasta }}
-            {{ form.adulto }}
-            {{ form.menor }} -->
-          <!-- </div> -->
-<!-- 
-          <div id="restaurante-fields" style="display: none;">
-            {{ form.restaurante }}
-            {{ form.fecha_desde }}
-            
-            {{ form.adulto }}
-            {{ form.menor }}
-          </div>
-      
-          <div id="excursion-fields" style="display: none;">
-            {{ form.excursion }}
-            {{ form.fecha_desde }}
-            
-            {{ form.adulto }}
-            {{ form.menor }}
-          </div>
-
--->
-
+           
+          {{form.as_p}} 
 
           <input type="submit" class="btn btn-primary" value="ENVIAR RESERVA">
         </form>  
