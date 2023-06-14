@@ -4,18 +4,20 @@ from . import views
 #from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import LoginView, LogoutView
+from .views import CustomLoginView
 
 #from .views import lista_hoteles,
 # from .views import detalles_hotel
 from django.conf import settings
-
+from django.contrib.auth import views as auth_views
+#from .views import CustomLoginView
 
 
 
 
 urlpatterns = [
     path('', views.index, name="index"),
-  #  path('accounts/', include('django.contrib.auth.urls')),
+
 
     path('nosotros/', views.nosotros, name="nosotros"),
     path('enviar_consulta',views.enviar_consulta, name="enviar_consulta"),
@@ -28,9 +30,10 @@ urlpatterns = [
     path('ruta_del_vino/', views.ruta_del_vino, name="ruta_del_vino"),
     
     path('registro/', views.registro, name="registro"),
-    path('logout/', views.logout_request, name="logout"),
-    path('login/', views.login_request, name="login"),
-
+   # path('logout/', views.logout_request, name="logout"),
+    # path('login/', views.login_request, name="login"),
+    # path('accounts/login/', CustomLoginView.as_view(), name="login"),
+    #path('accounts/login/', views.login_request, name="login"),
 
     path('listar_reservas/', views.listar_reservas, name="listar_reservas"),
     path('mi_cuenta/', views.mi_cuenta, name="mi_cuenta"),

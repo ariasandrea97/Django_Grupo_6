@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.views.generic.list import ListView
 import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
 
 
 #Definicion de los formularios:
@@ -19,6 +20,73 @@ from .forms import AltaUsuarioForm
 from .models import ReservaExcursion, ReservaRestaurante, Reservas,  Hotel, Excursion, Restaurante, User
 #from .models import Servicios
 #from .forms import HotelForm
+
+
+
+# class CustomLoginView(LoginView):
+#     template_name = 'Viajeros/usuario/login.html'  # Ruta de la plantilla de inicio de sesión personalizada
+#     success_url = '/Viajeros/paginas/nosotros/'  # URL a la que se redirige después de iniciar sesión exitosamente
+class CustomLoginView(LoginView):
+    # template_name = 'registration/login.html'
+    template_name = 'Viajeros/usuario/login.html'
+
+############   alta de un usuario      ######################
+def registro(request):     
+    if request.method == "POST":
+        alta_usuario_form = AltaUsuarioForm(request.POST)
+        if alta_usuario_form.is_valid():
+            user = alta_usuario_form.save(commit=False)
+            user.save()  #guardamos el usuario
+
+            messages.add_message(request, messages.SUCCESS, 'Usuario dado de alta con éxito', extra_tags="tag1")
+             
+            login(request,user)
+            messages.add_message(request, messages.SUCCESS, 'Ha iniciado sesion como: ' + alta_usuario_form.cleaned_data.get('username'), extra_tags="tag1")
+                              
+            return render(request, 'Viajeros/index.html')
+    else:
+        # GET
+        alta_usuario_form = AltaUsuarioForm()
+    
+    context = {
+        'form': alta_usuario_form
+    }
+
+    return render(request, 'Viajeros/usuario/registro.html',context) 
+
+
+############    LOGIN / LOGOUT  #####################
+def login_request(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data= request.POST)
+        if form.is_valid():
+            usuario =form.cleaned_data.get('username')
+            contraseña= form.cleaned_data.get('password')
+            user= authenticate(username=usuario, password=contraseña)
+
+            if user is not None:
+                login(request,user)
+                messages.info(request, f"Ha iniciado sesion como: {usuario}")
+                return render(request, 'Viajeros/index.html')
+
+    form = AuthenticationForm()
+    return render(request, 'Viajeros/usuario/login.html',{"form": form}) 
+
+
+
+
+
+#####################################################################
+# def logout_request(request):
+#     logout(request)
+#     messages.info(request,"Sesion finalizada")
+#     return render(request, 'Viajeros/index.html') 
+
+#####################################################################
+
+def mi_cuenta(request):
+    context = {}
+    return render(request, 'Viajeros/paginas/mi_cuenta.html', context)
 
 
 def index(request):
@@ -191,64 +259,6 @@ def ruta_del_vino(request):
 
 
 
-############   alta de un usuario      ######################
-def registro(request):     
-    if request.method == "POST":
-        alta_usuario_form = AltaUsuarioForm(request.POST)
-        if alta_usuario_form.is_valid():
-            user = alta_usuario_form.save(commit=False)
-            user.save()  #guardamos el usuario
-
-            messages.add_message(request, messages.SUCCESS, 'Usuario dado de alta con éxito', extra_tags="tag1")
-             
-            login(request,user)
-            messages.add_message(request, messages.SUCCESS, 'Ha iniciado sesion como: ' + alta_usuario_form.cleaned_data.get('username'), extra_tags="tag1")
-                              
-            return render(request, 'Viajeros/index.html')
-    else:
-        # GET
-        alta_usuario_form = AltaUsuarioForm()
-    
-    context = {
-        'form': alta_usuario_form
-    }
-
-    return render(request, 'Viajeros/usuario/registro.html',context) 
-
-
-############    LOGIN / LOGOUT  #####################
-def login_request(request):
-    if request.method == "POST":
-        form = AuthenticationForm(request, data= request.POST)
-        if form.is_valid():
-            usuario =form.cleaned_data.get('username')
-            contraseña= form.cleaned_data.get('password')
-            user= authenticate(username=usuario, password=contraseña)
-
-            if user is not None:
-                login(request,user)
-                messages.info(request, f"Ha iniciado sesion como: {usuario}")
-                return render(request, 'Viajeros/index.html')
-
-    form = AuthenticationForm()
-    return render(request, 'Viajeros/usuario/login.html',{"form": form}) 
-
-
-
-
-
-#####################################################################
-def logout_request(request):
-    logout(request)
-    messages.info(request,"Sesion finalizada")
-    return render(request, 'Viajeros/index.html') 
-
-#####################################################################
-
-def mi_cuenta(request):
-    context = {}
-    return render(request, 'Viajeros/paginas/mi_cuenta.html', context)
-
 ##############  HOTELES  ##########################################
 # def detalle_hotel_Algodon(request):
 #     context = {}
@@ -278,8 +288,7 @@ def mi_cuenta(request):
 
 ###############################################################################################
 
-
-#@login_required
+@login_required
 def enviar_reserva_hotel(request):    # guarda reserva en la tabla Reservas
     context={}
     if request.method == "POST":
@@ -313,7 +322,7 @@ def enviar_reserva_hotel(request):    # guarda reserva en la tabla Reservas
 
 
 #####################################################################################
-
+@login_required
 def enviar_reserva_restaurante(request):    # guarda reserva en la tabla Reservas
     context={}
     if request.method == "POST":
@@ -336,7 +345,7 @@ def enviar_reserva_restaurante(request):    # guarda reserva en la tabla Reserva
     return render(request, 'Viajeros/paginas/enviar_reserva_restaurante.html', context)
 
 ##################################################################################
-
+@login_required
 def enviar_reserva_excursion(request):    # guarda reserva en la tabla Reservas
     context={}
     if request.method == "POST":
@@ -376,6 +385,7 @@ def enviar_reserva_excursion(request):    # guarda reserva en la tabla Reservas
 #     return render(request, 'Viajeros/paginas/mis_reservas_excursiones.html', context)
 
 #####################################################################
+@login_required
 def listar_reservas(request):    
     if request.method == 'POST':
         formulario = ConsultaReservasForm(request.POST)
