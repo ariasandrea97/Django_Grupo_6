@@ -41,3 +41,69 @@
   font-size: 14px; 
   line-height: 20px; /* Ajusta el valor de la altura de línea según tus necesidades */
 }
+
+
+.carousel-container {
+  width: 90%;  
+  /* Ajusta el tamaño de acuerdo a tus necesidades */
+  max-width: 600px;  
+  /* Ajusta el tamaño máximo permitido */
+  margin: 0 auto; 
+  /* Centra horizontalmente el carrousel */
+}
+
+.carousel-inner {
+  height: 300px; 
+}
+
+
+
+/***** Slider ************/
+.slider-frame {
+	width: 1280px;
+    height: auto;
+	margin:0px auto 0;
+	overflow: hidden;
+}
+.slider-frame ul {
+	display: flex;
+	padding: 0;
+	width: 400%;
+	animation: slide 20s infinite alternate ease-in-out;
+}
+.slider-frame li {
+	width: 100%;
+	list-style: none;
+}
+.slider-frame img {
+	width: 100%;
+    height: 700px;
+}
+
+@keyframes slide {
+	0% {margin-left: 0;}
+	20% {margin-left: 0;}
+	
+	25% {margin-left: -100%;}
+	45% {margin-left: -100%;}
+	
+	50% {margin-left: -200%;}
+	70% {margin-left: -200%;}
+	
+	75% {margin-left: -300%;}
+	100% {margin-left: -300%;}
+}
+
+.texto-encima{ /* para colocar texto sobre slider   */
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    font-size:40px;
+    color: rgb(255, 255, 255);
+}
+.carrousel{  
+    position: relative;
+    text-align: center;
+    font-weight: bold;
+}
