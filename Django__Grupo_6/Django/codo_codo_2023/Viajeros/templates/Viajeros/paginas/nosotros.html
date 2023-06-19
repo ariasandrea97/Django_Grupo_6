@@ -1,6 +1,12 @@
 {% extends 'Viajeros/base/base.html' %}
 {% load static %}
 
+{% block extras_css%}
+   
+    <link rel="stylesheet" href="{% static 'Viajeros/css/index.css' %}">
+
+{% endblock %}
+
 {% block contenido %}
     
     
@@ -15,11 +21,11 @@
 
     <div class="carousel-inner">
       <div class="carousel-item active d-item">
-        <img src="{% static 'Viajeros/img/caminos_del_vino2.jpg'%}" class="d-block " alt="caminos_del_vino2">
+        <img src="{% static 'Viajeros/img/caminos_del_vino2.jpg'%}" class="d-block " alt="...">
       </div>
 
       <div class="carousel-item d-item">
-        <img src="{% static 'Viajeros/img/Reyunos_Dique.jpg'%}" class="d-block w-100" alt="...">
+        <img src="{% static 'Viajeros/img/Reyunos_GalileoVitali.jpg'%}" class="d-block " alt="...">
       </div>
 
       <div class="carousel-item d-item">
@@ -41,9 +47,7 @@
 </div>
 
 
-
-
-<div class="container-flex">
+<div class="container-flex bg-success p-2 text-dark bg-opacity-25 ">
 
   
    <h1>SOBRE VIAJEROS </h1>

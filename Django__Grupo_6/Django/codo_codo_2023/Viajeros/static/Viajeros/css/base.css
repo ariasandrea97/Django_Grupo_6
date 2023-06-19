@@ -1,6 +1,7 @@
 .mi-formulario label {
   display: block;
   margin-bottom: 10px;
+  
 }
 
 .mi-formulario input[type="text"],
@@ -53,7 +54,7 @@
 }
 
 .carousel-inner {
-  height: 200px; 
+  height: 400px; 
 }
 
 
