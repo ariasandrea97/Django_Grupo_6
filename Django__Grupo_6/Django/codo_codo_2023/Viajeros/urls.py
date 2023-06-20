@@ -45,6 +45,7 @@ urlpatterns = [
     path('reservas_excursion/<int:reserva_id>/eliminar/', views.eliminar_reserva_excursion, name='eliminar_reserva_excursion'),
 
    
-     
+    path('buscar_reservas_admin/', views.buscar_reservas_admin, name='buscar_reservas_admin'), 
+   
    
 ] 

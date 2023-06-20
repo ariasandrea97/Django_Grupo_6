@@ -53,8 +53,9 @@
                 <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{% url 'circuito_turistico' %}">San Rafael</a></li>
                     <li><a class="dropdown-item" href="{% url 'ruta_del_vino' %}">Ruta del Vino</a></li>
+                    <!-- <li><a class="dropdown-item" href="#">Sitio de Interes</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'login'%}">Mas Informacion</a></li> 
+                    <li><a class="dropdown-item" href="#">Mas Informacion</a></li> -->
                 </ul>
               </li>
 
@@ -72,7 +73,8 @@
 
                       <ul class="dropdown-menu">
                         
-                        <li><a class="dropdown-item" href="{% url 'listar_reservas' %}">Consultar reservas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'buscar_reservas_admin' %}">Buscar reservas</a></li>
+                        
                       </ul>  
                     {% else %}
                       <ul class="dropdown-menu">

@@ -162,6 +162,6 @@ class ReservaExcursion(models.Model):
 
     def __str__(self):
 	   # return self.excursion
-        return f"{self.usuario} - {self.excursion} - {self.fecha_desde} - {self.fecha_hasta} "
+        return f"{self.usuario} - {self.excursion} - {self.fecha_reserva} - {self.hora_reserva} "
  
  

@@ -143,28 +143,10 @@ class ModificarDatosForm(forms.ModelForm):
         self.fields['email'].label = 'Email'
 
 
+################################################################################
 
-# class ReservaForm(forms.ModelForm):
-#     class Meta:
-#         model = Reservas
-#         fields= [ 'hotel','fecha_desde', 'fecha_hasta', 'adulto','menor']
-
-#     def __init__(self, *args, **kwargs):
-#         super(ReservaForm, self).__init__(*args, **kwargs)
+class BusquedaUsuarioForm(forms.Form):
+    username = forms.CharField(label='Nombre de usuario')
 
 
-# class ReservaRestauranteForm(forms.ModelForm):
-#     class Meta:
-#         model = ReservaRestaurante
-#         fields= [ 'restaurante','fecha_reserva', 'hora_reserva', 'adulto', 'menor']
 
-#     def __init__(self, *args, **kwargs):
-#         super(ReservaRestauranteForm, self).__init__(*args, **kwargs)
-
-# class ReservaExcursionForm(forms.ModelForm):
-#     class Meta:
-#         model = ReservaExcursion
-#         fields= [ 'excursion','fecha_reserva', 'hora_reserva', 'adulto', 'menor']
-
-#     def __init__(self, *args, **kwargs):
-#         super(ReservaExcursionForm, self).__init__(*args, **kwargs)

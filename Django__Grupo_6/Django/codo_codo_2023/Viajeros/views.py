@@ -24,7 +24,7 @@ from .models import ReservaExcursion, ReservaRestaurante, Reservas,  Hotel, Excu
 from .forms import ModificarDatosForm
 # from .forms import ModificarReservaForm
 # from django.http import JsonResponse
-
+from .forms import BusquedaUsuarioForm
 
 
 def index(request):
@@ -266,26 +266,6 @@ def enviar_reserva_excursion(request):
     return render(request, 'Viajeros/paginas/enviar_reserva_excursion.html', context)
 
 
-# def enviar_reserva_excursion__(request):
-#     form = EnviarReservaExcursionForm2()
-
-#     if request.method == 'POST':
-#         form = EnviarReservaExcursionForm2(request.POST)
-#         if form.is_valid():
-#             form.cargar_dias_choices()
-#             form.save()
-
-
-#            # # return redirect('reserva_exitosa')  # Redirige a una página de éxito de reserva
-#             return redirect('listar_reservas')
-#     return render(request, 'Viajeros/paginas/enviar_reserva_excursion.html', {'form': form})
-
-
-# def cargar_dias(request):
-#     excursion_id = request.GET.get('excursion_id')
-#     excursion = Excursion.objects.get(pk=excursion_id)
-#     dias = excursion.diasSalidas.split(',') if excursion.diasSalidas else []
-#     return JsonResponse({'dias': dias})
 
 ############################# LISTAR  RESERVAS     ##########################################################
 
@@ -335,10 +315,15 @@ def listar_reservas2(request):
     reservas = Reservas.objects.filter(usuario=request.user)
     return render(request, 'Viajeros/reservas/listar_reservas2.html', {'reservas': reservas})
 
+
+
+
+
 ################  Modificar reservas   ##################################################
 @login_required
 def modificar_reserva(request, reserva_id):   # modificar reservas de Hotel
-    reserva = get_object_or_404(Reservas, id=reserva_id, usuario=request.user)
+    # reserva = get_object_or_404(Reservas, id=reserva_id, usuario=request.user)
+    reserva = get_object_or_404(Reservas, id=reserva_id)
     
     if request.method == 'POST':
         # form = ReservaForm(request.POST, instance=reserva)
@@ -359,7 +344,8 @@ def modificar_reserva(request, reserva_id):   # modificar reservas de Hotel
 
 @login_required
 def modificar_reserva_restaurante(request, reserva_id):   # modificar reservas de restaurante
-    reserva = get_object_or_404(ReservaRestaurante, id=reserva_id, usuario=request.user)
+    # reserva = get_object_or_404(ReservaRestaurante, id=reserva_id, usuario=request.user)
+    reserva = get_object_or_404(ReservaRestaurante, id=reserva_id)
     
     if request.method == 'POST':
         # form = ReservaRestauranteForm(request.POST, instance=reserva)
@@ -380,7 +366,8 @@ def modificar_reserva_restaurante(request, reserva_id):   # modificar reservas d
 
 @login_required
 def modificar_reserva_excursion(request, reserva_id):   # modificar reservas de restaurante
-    reserva = get_object_or_404(ReservaExcursion, id=reserva_id, usuario=request.user)
+    # reserva = get_object_or_404(ReservaExcursion, id=reserva_id, usuario=request.user)
+    reserva = get_object_or_404(ReservaExcursion, id=reserva_id)
     
     if request.method == 'POST':
         # form = ReservaExcursionForm(request.POST, instance=reserva)
@@ -438,10 +425,8 @@ def eliminar_reserva_excursion(request, reserva_id):    # eliminar reservas de r
 
 
 
-#######################################################################################################
 
-
-
+###############################################################################################
 
 
 @login_required
@@ -450,3 +435,44 @@ def detalle_reserva(request, reserva_id):
     return render(request, 'Viajeros/reservas/detalle_reserva.html', {'reserva': reserva})
 
 
+
+############################################################################################
+# Busqueda de reservas por usuario
+@login_required
+def buscar_reservas_admin(request):
+    if request.method == 'POST':
+        formulario = BusquedaUsuarioForm(request.POST)
+        if formulario.is_valid():
+            username = formulario.cleaned_data['username']
+           # usuario = formulario.cleaned_data['username']
+            print("username",username)
+            # try:
+            usuario = User.objects.get(username=username)
+            print("usuario", usuario)
+            reservas_hotel = Reservas.objects.filter(usuario=usuario)# reservas de hotel
+            print("reservas_hotel",reservas_hotel)
+            reservas_restaurante = ReservaRestaurante.objects.filter(usuario=usuario) # reservas de restaurante
+            print("reservas_restaurante",reservas_restaurante)
+            reservas_excursion = ReservaExcursion.objects.filter(usuario=usuario) # reservas de excursion
+            print("reservas_excursion",reservas_excursion )
+            # except User.DoesNotExist:
+            #     reservas_hotel = None
+            #     reservas_restaurante= None
+            #     reservas_excursion= None
+        else:
+            reservas_hotel = None
+            reservas_restaurante= None
+            reservas_excursion= None
+    else:
+        formulario = BusquedaUsuarioForm()
+        reservas_hotel = None
+        reservas_restaurante= None
+        reservas_excursion= None
+
+    context = {
+        'formulario': formulario,
+        'reservas_hotel': reservas_hotel,
+        'reservas_restaurante': reservas_restaurante,
+        'reservas_excursion': reservas_excursion,
+    }
+    return render(request, 'Viajeros/reservas/buscar_reservas_admin.html', context)
