@@ -16,16 +16,12 @@
 {% block contenido %}
 <section class="listado">
 
+    <h1>Datos del usuario</h1>
+    <p><strong>Nombre:</strong> {{ datos_usuario.nombre }}</p>
+    <p><strong>Apellido:</strong> {{ datos_usuario.apellido }}</p>
+    <p><strong>Email:</strong> {{ datos_usuario.email }}</p>
 
-        <article>
-
-            <p><b>Usuario:</b>: {{user.username}}</p>
-            <p><b>Nombre:</b>: {{user.first_name}}</p>
-            <p><b>Apellido:</b>: {{user.last_name}}</p>
-            <p><b>Email:</b>: {{user.email}}</p>
-
-
-        </article>
-
-        </section>
+</section>
+<br>
+<a href="{% url 'modificar_datos' %}" class="btn btn-primary">Modificar datos</a>
 {% endblock %}

@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'codo_codo_2023.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Viajeros',   #'Viajeros'
+        'NAME': 'viajeros',   #'Viajeros'
         'USER': 'postgres',
-        'PASSWORD': '123456',
+        'PASSWORD': 'Django1234',  #'123456',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -129,10 +129,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'Viajeros/static'),
                     os.path.join(BASE_DIR, 'media')
                     )
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
     
-]
+# ]
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # MEDIA_URL = 'media/'
