@@ -20,7 +20,7 @@
   {% csrf_token %}
 
   {% if user.is_superuser %}
-    <a href="{% url 'buscar_reservas_hotel' %}" class="btn btn-primary">Volver</a>
+    <a href="{% url 'buscar_reservas_admin' %}" class="btn btn-primary">Volver</a>
   {% else %}
     <a href="{% url 'listar_reservas' %}" class="btn btn-primary">Volver</a>
   {% endif %}
