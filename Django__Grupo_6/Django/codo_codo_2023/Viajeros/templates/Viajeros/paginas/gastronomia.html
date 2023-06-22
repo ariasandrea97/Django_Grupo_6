@@ -16,7 +16,13 @@
         <div class="card-body">
           <h5 class="card-title">VILLA BONITA RESTAURANTE</h5>
           <p class="card-text">Dirección: Ruta 150 S/nro – San Rafael, Mendoza, Argentina. Restaurante Villa Bonita se especializa en "Cocina de Campo & Autor" , se encuentra ubicado en un entorno de naturaleza y relax con un amplio jardín en donde podrá degustar de platos típicos de nuestra región como: Carne a la masa, humitas en chala, Chivo, Cordero, Truchas y demás exquisiteces, cuenta con cava de Vinos subterranea, para que cada cliente elija el vino que desea degustar."</p>
+          
+          {% if user.is_superuser %}
+          <a href="{% url 'reservar_restaurante' %}" class="btn btn-primary">Enviar Reserva</a>
+          {% else %}
           <a href="{% url 'enviar_reserva_restaurante' %}" class="btn btn-primary">Enviar Reserva</a>
+          {% endif %}
+          
         </div>
       </div>
     </div>
@@ -32,7 +38,13 @@
           <h5 class="card-title">BODEGA BOUTIQUE IBARRA</h5>
           <p class="card-text">Dirección: Cubillos 3550 – San Rafael, Mendoza, Argentina.Es una Bodega Familiar que dedica su energía y pasión a la elaboración de vinos con acento bien mendocino. 
             Esta Bodega Boutique ensambla el placer de maridar vinos orgánicos con comidas típicas cuyanas.Apto para Vegetarianos.Almuerzo, Cena, Abierto hasta tarde.Reservas, Asiento, Acceso para silla de ruedas, Sirve alcohol, Servicio de mesa, Wi-Fi gratis</p>
-          <a href="{% url 'enviar_reserva_restaurante' %}" class="btn btn-primary">Enviar Reserva</a>
+           
+            {% if user.is_superuser %}
+            <a href="{% url 'reservar_restaurante' %}" class="btn btn-primary">Enviar Reserva</a>
+            {% else %}
+            <a href="{% url 'enviar_reserva_restaurante' %}" class="btn btn-primary">Enviar Reserva</a>
+            {% endif %}
+
         </div>
       </div>
     </div>
@@ -48,7 +60,13 @@
         <div class="card-body">
           <h5 class="card-title-center">CHEZ GASTON RESTAURAT</h5>
           <p class="card-text-center">Dirección: RN 144 KM 674 Cuadro Venegas - San Rafael – Mendoza, Argentina.Chez Gaston cuenta con un tradicional horno de arcilla y un asador a la leña, especializado en la auténtica cocina gourmet argentina. Cada plato de nuestro menú de temporada se prepara con los ingredientes locales más frescos de nuestra plantación y de nuestros vecinos, incluyendo una variedad de frutas y verduras, aceite de oliva y otros elementos esenciales.</p>
+          
+          {% if user.is_superuser %}
+          <a href="{% url 'reservar_restaurante' %}" class="btn btn-primary">Enviar Reserva</a>
+          {% else %}
           <a href="{% url 'enviar_reserva_restaurante' %}" class="btn btn-primary">Enviar Reserva</a>
+          {% endif %}
+          
         </div>
       </div>
     </div>
