@@ -40,8 +40,12 @@
 <br>
 
 <a href="{% url 'alojamiento' %}" class="btn btn-primary">Volver</a>
-<a href="{% url 'enviar_reserva_hotel' %}" class="btn btn-primary">Enviar Reserva</a>
 
+{% if user.is_superuser %}
+<a href="{% url 'reservar_hotel' %}" class="btn btn-primary">Enviar Reserva</a>
+{% else %}
+<a href="{% url 'enviar_reserva_hotel' %}" class="btn btn-primary">Enviar Reserva</a>
+{% endif %}
 
 
 

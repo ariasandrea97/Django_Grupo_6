@@ -1,15 +1,9 @@
 {% extends 'Viajeros/base/base.html' %}
-
 {% load static %}
-
 {% block extra_css %}
-  <!--   <link rel="stylesheet" href="{% static 'aula_virtual/css/alta_alumno.css' %}">   -->
 {% endblock %}
-
 {% block titulo %}{% endblock %}
-
 {% block encabezado %}
-
 {% endblock %}
 
 {% block contenido %}
@@ -18,11 +12,26 @@
         <h1>Ingrese los datos para la reserva de Excursiones</h1>
         <p><b>Tipo de reserva:</b>: Excursion</p>
         
-        <form class="mi-formulario" action="{% url 'enviar_reserva_excursion' %}" method="POST">
+
+        {% if user.is_superuser %}
+        <form class="mi-formulario" action="{% url 'reservar_excursion' %}" method="POST">
+
           {% csrf_token %}
-          {{form.as_p}}
+          {{form.as_p}} 
           <input type="submit" class="btn btn-primary" value="ENVIAR RESERVA">
-      </form>
+        </form> 
+         
+        {% else %}
+        <form class="mi-formulario" action="{% url 'enviar_reserva_excursion' %}" method="POST">
+
+          {% csrf_token %}
+          {{form.as_p}} 
+          <input type="submit" class="btn btn-primary" value="ENVIAR RESERVA">
+        </form>  
+        {% endif %}
+
+
+
 
       {% else %}
         <h2> Por favor ingrese con su usuario y contraseña antes de realizar la reserva</h2>

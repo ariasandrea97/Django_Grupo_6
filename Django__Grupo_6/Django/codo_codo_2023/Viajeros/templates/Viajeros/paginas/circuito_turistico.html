@@ -24,7 +24,13 @@
               <div class="card-body">
                 <h4 class="card-title card-title-custom">CAÑON DEL ATUEL</h4>
                 <p class="card-text card-text-custom">Salidas diarias. Horarios:  09.00 hs y 15.00 hs.</p>
+                
+                {% if user.is_superuser %}
+                <a href="{% url 'reservar_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+                {% else %}
                 <a href="{% url 'enviar_reserva_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+                {% endif %}
+                
               </div>
             </div>
         </div>
@@ -38,7 +44,11 @@
             <div class="card-body">
               <h4 class="card-title card-title-custom">Villavicencio</h4>
               <p class="card-text">Salidas diarias. Horarios:  09.00 hs y 15.00 hs</p>
+              {% if user.is_superuser %}
+              <a href="{% url 'reservar_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+              {% else %}
               <a href="{% url 'enviar_reserva_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+              {% endif %}
             </div>
           </div>
       </div>
@@ -51,7 +61,11 @@
               <div class="card-body">
                 <h4 class="card-title card-title-custom">Bodegas y Viñedos</h4>
                 <p class="card-text">Salidas diarias. Horarios:  09.00 hs y 15.00 hs </p>
+                {% if user.is_superuser %}
+                <a href="{% url 'reservar_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+                {% else %}
                 <a href="{% url 'enviar_reserva_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+                {% endif %}
               </div>
             </div>
         </div>
@@ -65,7 +79,11 @@
             <div class="card-body">
               <h4 class="card-title card-title-custom">City Tour en la ciudad de San Rafael</h4>
               <p class="card-text">Salidas diarias. Horarios:  09.00 hs y 15.00 hs. Duracion: 4 Horas</p>
+              {% if user.is_superuser %}
+              <a href="{% url 'reservar_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+              {% else %}
               <a href="{% url 'enviar_reserva_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+              {% endif %}
             </div>
           </div>
       </div>
@@ -79,7 +97,11 @@
                   <div class="card-body">
                     <h4 class="card-title card-title-custom">Turismo Aventura en Valle Grande</h4>
                     <p class="card-text">Salidas diarias. Horarios:  09.00 hs y 15.00 hs. Duracion: 4 Horas</p>
+                    {% if user.is_superuser %}
+                    <a href="{% url 'reservar_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+                    {% else %}
                     <a href="{% url 'enviar_reserva_excursion' %}" class="btn btn-primary">Enviar Reserva</a>
+                    {% endif %}
                   </div>
                 </div>
             </div>

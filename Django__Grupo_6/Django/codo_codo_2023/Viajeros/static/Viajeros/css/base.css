@@ -1,7 +1,10 @@
+body {
+  background-color: rgb(138, 133, 133);
+}
+
 .mi-formulario label {
   display: block;
   margin-bottom: 10px;
-  
 }
 
 .mi-formulario input[type="text"],
@@ -40,29 +43,51 @@
 
 .card-text-custom {
   font-size: 14px; 
-  line-height: 20px; /* Ajusta el valor de la altura de línea según tus necesidades */
+  line-height: 20px; 
+}
+
+/* Estilo para mensajes de éxito */
+.messages .success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+/* Estilo para mensajes de información */
+.messages .info {
+  background-color: #d9edf7;
+  color: #31708f;
+}
+
+/* Estilo para mensajes de advertencia */
+.messages .warning {
+  background-color: #fcf8e3;
+  color: #8a6d3b;
+}
+
+/* Estilo para mensajes de error */
+.messages .error {
+  background-color: #f2dede;
+  color: #a94442;
 }
 
 
-.carousel-container {
+
+/* .carousel-container {
   width: 90%;  
-  /* Ajusta el tamaño de acuerdo a tus necesidades */
   max-width: 600px;  
-  /* Ajusta el tamaño máximo permitido */
   margin: 0 auto; 
-  /* Centra horizontalmente el carrousel */
 }
 
 .carousel-inner {
-  height: 400px; 
-}
+  height: 300px; 
+} */
 
 
 
 /***** Slider ************/
-.slider-frame {
+/* .slider-frame {
 	width: 1280px;
-  height: auto;
+    height: auto;
 	margin:0px auto 0;
 	overflow: hidden;
 }
@@ -78,7 +103,7 @@
 }
 .slider-frame img {
 	width: 100%;
-  height: auto;
+    height: 700px;
 }
 
 @keyframes slide {
@@ -95,7 +120,7 @@
 	100% {margin-left: -300%;}
 }
 
-.texto-encima{ /* para colocar texto sobre slider   */
+.texto-encima{ 
     position: absolute;
     top: 20%;
     left: 40%;
@@ -107,4 +132,12 @@
     position: relative;
     text-align: center;
     font-weight: bold;
+} */
+
+
+
+.messages_list li {
+  /* Estilos para cada mensaje */
+  color: blue;  /* Cambia el color a azul */
+  font-size: 16px;  /* Cambia el tamaño de fuente a 16 píxeles */
 }

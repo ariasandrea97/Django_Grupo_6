@@ -1,15 +1,13 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 # from django.http import HttpResponse, HttpResponseNotFound
-from . import views
-#
 
 from django.contrib.auth.forms import UserCreationForm , AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 # from django.views.generic.list import ListView
 import datetime
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 # from django.contrib.auth.views import LoginView
 
 
@@ -18,40 +16,36 @@ from .forms import EnviarConsultaForm
 from .forms import EnviarReservaHotelForm, EnviarReservaRestauranteForm, EnviarReservaExcursionForm, ConsultaReservasForm
 from .forms import AltaUsuarioForm
 from .models import ReservaExcursion, ReservaRestaurante, Reservas,  Hotel, Excursion, Restaurante, User
-#from .models import Servicios
-#from .forms import HotelForm
-# from .forms import ReservaForm  , ReservaRestauranteForm, ReservaExcursionForm 
+
 from .forms import ModificarDatosForm
-# from .forms import ModificarReservaForm
-# from django.http import JsonResponse
-from .forms import BusquedaUsuarioForm
+from .forms import BusquedaUsuarioForm     #para perfil Admin
+from .forms import ReservaHotelForm, ReservaRestauranteForm, ReservaExcursionForm    # forms para perfil Admin
+
 
 
 def index(request):
-    hotel = Hotel.objects.all()
-    excursion = Excursion.objects.all()
-    restaurante = Restaurante.objects.all()
-    carousel_images = hotel  # Por ejemplo, se utilizan las imágenes de los hoteles para el carrousel
+    # hotel = Hotel.objects.all()
+    # excursion = Excursion.objects.all()
+    # restaurante = Restaurante.objects.all()
+    # carousel_images = hotel  # Por ejemplo, se utilizan las imágenes de los hoteles para el carrousel
 
-    context = {
-        'carousel_images': carousel_images,
-        'hotel': hotel,
-        'excursion': excursion,
-        'restaurante': restaurante,
-    }
+    # context = {
+    #     'carousel_images': carousel_images,
+    #     'hotel': hotel,
+    #     'excursion': excursion,
+    #     'restaurante': restaurante,
+    # }
 
-    return render(request, 'Viajeros/index.html', context)
+    return render(request, 'Viajeros/index.html')
 
-############ ######### Alta de un usuario      ######################
+#####################      Alta de un usuario      ######################
 def registro(request):     
     if request.method == "POST":
         alta_usuario_form = AltaUsuarioForm(request.POST)
         if alta_usuario_form.is_valid():
             user = alta_usuario_form.save(commit=False)
             user.save()  #guardamos el usuario
-
             messages.add_message(request, messages.SUCCESS, 'Usuario dado de alta con éxito', extra_tags="tag1")
-             
             login(request,user)
             messages.add_message(request, messages.SUCCESS, 'Ha iniciado sesion como: ' + alta_usuario_form.cleaned_data.get('username'), extra_tags="tag1")
                               
@@ -83,9 +77,6 @@ def login_request(request):
 
     form = AuthenticationForm()
     return render(request, 'Viajeros/usuario/login.html',{"form": form}) 
-
-
-
 
 
 #####################################################################
@@ -126,9 +117,9 @@ def modificar_datos(request):
 
 ###########################################################################################
  
-def baja_persona(request):
-    context={}
-    return render(request, 'Viajeros/baja_persona.html', context)
+# def baja_persona(request):
+#     context={}
+#     return render(request, 'Viajeros/baja_persona.html', context)
 
 ####################  PAGINAS ##########################################
 
@@ -150,8 +141,6 @@ def enviar_consulta(request):
     else:
         form = EnviarConsultaForm()
     return render(request, 'Viajeros/paginas/enviar_consulta.html', {'form': form})
-
-
 
 
 ########################## HOTEL  ################################################################
@@ -208,7 +197,8 @@ def enviar_reserva_hotel(request):
             alta_reserva.fecha_registracion= datetime.date.today()
             alta_reserva.save()  #guardamos la reserva
             messages.add_message(request, messages.SUCCESS, 'Reserva enviada con exito', extra_tags="tag1")
-            return render(request, 'Viajeros/index.html', context)
+            # return render(request, 'Viajeros/index.html', context)
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
 
     else:
         # GET
@@ -217,12 +207,15 @@ def enviar_reserva_hotel(request):
     return render(request, 'Viajeros/paginas/enviar_reserva_hotel.html', context)
 
 
+
 #####################################################################################
+
 @login_required
 def enviar_reserva_restaurante(request):    
     context={}
     if request.method == "POST":
         form = EnviarReservaRestauranteForm(request.POST)
+        # form = EnviarReservaRestauranteForm(user=request.user) # Pasar el usuario actual al formulario
         if form.is_valid():
             alta_reserva_restaurante = form.save(commit=False)
             alta_reserva_restaurante.usuario= request.user
@@ -230,8 +223,9 @@ def enviar_reserva_restaurante(request):
             alta_reserva_restaurante.fecha_registracion= datetime.date.today()
             alta_reserva_restaurante.save()  #guardamos la reserva
             messages.add_message(request, messages.SUCCESS, 'Reserva enviada con exito', extra_tags="tag1")
-            return render(request, 'Viajeros/index.html', context)
-            # return render(request, 'Viajeros/paginas/reserva_detalle.html', context)
+            # return render(request, 'Viajeros/index.html', context)
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
+
     else:
         # GET
         form = EnviarReservaRestauranteForm()
@@ -247,9 +241,6 @@ def enviar_reserva_excursion(request):
     context={}
     if request.method == "POST":
         form = EnviarReservaExcursionForm(request.POST)
-        # excursion_id = request.POST.get('excursion')
-        # form.set_excursion_choices(excursion_id)
-
         if form.is_valid():
             alta_reserva_excursion = form.save(commit=False)
             alta_reserva_excursion.usuario= request.user
@@ -257,7 +248,8 @@ def enviar_reserva_excursion(request):
             alta_reserva_excursion.fecha_registracion= datetime.date.today()
             alta_reserva_excursion.save()  #guardamos la reserva
             messages.add_message(request, messages.SUCCESS, 'Reserva enviada con exito', extra_tags="tag1")
-            return render(request, 'Viajeros/index.html', context)
+            # return render(request, 'Viajeros/index.html', context)
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
     else:
         # GET
          form = EnviarReservaExcursionForm()
@@ -281,18 +273,17 @@ def listar_reservas(request):
 
 
             if seleccion == 'hotel':
-                # Lógica para la opción 1
+
                 resultado = 'hotel'
             elif seleccion == 'restaurante':
-                # Lógica para la opción 2
+
                 resultado = 'restaurante'
             elif seleccion == 'excursion':
-                # Lógica para la opción 3
+
                 resultado = 'excursion'
             elif seleccion == 'todo':
                 resultado = 'todo'
             
-            # print("seleccion = formulario.cleaned_data['seleccion']",resultado )
             context ={
                 'listado_hotel' : listado_hotel,
                 'listado_restaurante': listado_restaurante,
@@ -309,17 +300,9 @@ def listar_reservas(request):
 
 
 
-@login_required
-def listar_reservas2(request):
-    # reservas = Reservas.objects.all()
-    reservas = Reservas.objects.filter(usuario=request.user)
-    return render(request, 'Viajeros/reservas/listar_reservas2.html', {'reservas': reservas})
-
-
-
-
 
 ################  Modificar reservas   ##################################################
+
 @login_required
 def modificar_reserva(request, reserva_id):   # modificar reservas de Hotel
     # reserva = get_object_or_404(Reservas, id=reserva_id, usuario=request.user)
@@ -333,8 +316,8 @@ def modificar_reserva(request, reserva_id):   # modificar reservas de Hotel
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Reserva modificada con exito', extra_tags="tag1")
             # return redirect('detalle_reserva', id=reserva_id)
-            return redirect('listar_reservas2')
-            # return redirect('listar_reservas')
+            # return redirect('index')
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
     else:
         # form = ReservaForm(instance=reserva)
         form = EnviarReservaHotelForm(instance=reserva)
@@ -350,13 +333,13 @@ def modificar_reserva_restaurante(request, reserva_id):   # modificar reservas d
     if request.method == 'POST':
         # form = ReservaRestauranteForm(request.POST, instance=reserva)
         form =EnviarReservaRestauranteForm(request.POST, instance=reserva)
-        
 
         if form.is_valid():
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Reserva modificada con exito', extra_tags="tag1")
             # return redirect('detalle_reserva', id=reserva_id)
-            return redirect('listar_reservas2')
+            # return redirect('index')
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
     else:
         # form = ReservaRestauranteForm(instance=reserva)
         form = EnviarReservaRestauranteForm(instance=reserva)
@@ -377,16 +360,19 @@ def modificar_reserva_excursion(request, reserva_id):   # modificar reservas de 
             form.save()
             messages.add_message(request, messages.SUCCESS, 'Reserva modificada con exito', extra_tags="tag1")
             # return redirect('detalle_reserva', id=reserva_id)
-            return redirect('listar_reservas2')
+            # return redirect('index')
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
     else:
         # form = ReservaExcursionForm(instance=reserva)
         form = EnviarReservaExcursionForm(instance=reserva)
     
     return render(request, 'Viajeros/reservas/modificar_reserva.html', {'form': form})
 
+
 ##################  Eliminar Reservas  ####################################################
 
-@login_required
+# @login_required
+@permission_required('Viajeros.delete_hotel')
 def eliminar_reserva(request, reserva_id):    # eliminar reservas de hotel
     reserva = get_object_or_404(Reservas, pk=reserva_id)
     
@@ -394,40 +380,42 @@ def eliminar_reserva(request, reserva_id):    # eliminar reservas de hotel
         # Eliminar la reserva
         reserva.delete()
         messages.add_message(request, messages.SUCCESS, 'Reserva eliminada con exito', extra_tags="tag1")
-        return redirect('listar_reservas')
+        # return redirect('listar_reservas')
+        return render(request, 'Viajeros/index.html')
     
     return render(request, 'Viajeros/reservas/eliminar_reserva_hotel.html', {'reserva': reserva})
 
 
-@login_required
+# @login_required
+@permission_required('Viajeros.delete_restaurante')
 def eliminar_reserva_restaurante(request, reserva_id):    # eliminar reservas de restaurante
     reserva = get_object_or_404(ReservaRestaurante, pk=reserva_id)
     if request.method == 'POST':
         # Eliminar la reserva
         reserva.delete()
         messages.add_message(request, messages.SUCCESS, 'Reserva eliminada con exito', extra_tags="tag1")
-        return redirect('listar_reservas')
+        # return redirect('listar_reservas')
+        return render(request, 'Viajeros/index.html')
     
     return render(request, 'Viajeros/reservas/eliminar_reserva_restaurante.html', {'reserva': reserva})
 
 
 
-@login_required
+# @login_required
+@permission_required('Viajeros.delete_excursion')
 def eliminar_reserva_excursion(request, reserva_id):    # eliminar reservas de restaurante
     reserva = get_object_or_404(ReservaExcursion, pk=reserva_id)   
     if request.method == 'POST':
         # Eliminar la reserva
         reserva.delete()
         messages.add_message(request, messages.SUCCESS, 'Reserva eliminada con exito', extra_tags="tag1")
-        return redirect('listar_reservas')
+        # return redirect('listar_reservas')
+        return render(request, 'Viajeros/index.html')
     
     return render(request, 'Viajeros/reservas/eliminar_reserva_excursion.html', {'reserva': reserva})
 
 
-
-
 ###############################################################################################
-
 
 @login_required
 def detalle_reserva(request, reserva_id):
@@ -436,7 +424,9 @@ def detalle_reserva(request, reserva_id):
 
 
 
-############################################################################################
+######################################################################################################
+###########################  Perfil  ADMIN     #######################################################
+
 # Busqueda de reservas por usuario
 @login_required
 def buscar_reservas_admin(request):
@@ -445,20 +435,12 @@ def buscar_reservas_admin(request):
         if formulario.is_valid():
             username = formulario.cleaned_data['username']
            # usuario = formulario.cleaned_data['username']
-            print("username",username)
             # try:
             usuario = User.objects.get(username=username)
-            print("usuario", usuario)
             reservas_hotel = Reservas.objects.filter(usuario=usuario)# reservas de hotel
-            print("reservas_hotel",reservas_hotel)
             reservas_restaurante = ReservaRestaurante.objects.filter(usuario=usuario) # reservas de restaurante
-            print("reservas_restaurante",reservas_restaurante)
             reservas_excursion = ReservaExcursion.objects.filter(usuario=usuario) # reservas de excursion
-            print("reservas_excursion",reservas_excursion )
-            # except User.DoesNotExist:
-            #     reservas_hotel = None
-            #     reservas_restaurante= None
-            #     reservas_excursion= None
+
         else:
             reservas_hotel = None
             reservas_restaurante= None
@@ -476,3 +458,94 @@ def buscar_reservas_admin(request):
         'reservas_excursion': reservas_excursion,
     }
     return render(request, 'Viajeros/reservas/buscar_reservas_admin.html', context)
+
+
+#####################################################################
+@login_required
+def listar_reservas_hotel(request):
+    reservas = Reservas.objects.all()   # lista todas las reservas de hotel
+    # reservas = Reservas.objects.filter(usuario=request.user)
+    return render(request, 'Viajeros/reservas/listar_reservas_hotel.html', {'reservas': reservas})
+
+
+@login_required
+def listar_reservas_restaurante(request):
+    reservas = ReservaRestaurante.objects.all()   # lista todas las reservas de gastronomia
+    # reservas = Reservas.objects.filter(usuario=request.user)
+    return render(request, 'Viajeros/reservas/listar_reservas_restaurante.html', {'reservas': reservas})
+
+
+@login_required
+def listar_reservas_excursion(request):
+    reservas = ReservaExcursion.objects.all()   # lista todas las reservas de excursion
+    # reservas = Reservas.objects.filter(usuario=request.user)
+    return render(request, 'Viajeros/reservas/listar_reservas_excursion.html', {'reservas': reservas})
+
+
+
+######################################################################
+# Crear reserva de hotel 
+def reservar_hotel(request):
+    if request.method == 'POST':
+        form = ReservaHotelForm(request.POST)
+        if form.is_valid():  
+            usuario =form.cleaned_data.get('usuario')
+            print("usuario:", usuario)
+            alta_reserva = form.save(commit=False)
+            alta_reserva.Tipo_reserva= "Hotel"
+            alta_reserva.fecha_registracion= datetime.date.today()
+            alta_reserva.save()
+
+            messages.add_message(request, messages.SUCCESS, 'Reserva enviada con exito', extra_tags="tag1")
+            # return render(request, 'Viajeros/index.html')
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
+    else:
+        form = ReservaHotelForm()
+    return render(request, 'Viajeros/paginas/enviar_reserva_hotel.html', {'form': form})
+
+
+# Crear reserva de restaurante 
+def reservar_restaurante(request):
+    if request.method == 'POST':
+        form = ReservaRestauranteForm(request.POST)
+        if form.is_valid(): 
+            usuario =form.cleaned_data.get('usuario')
+            print("usuario:", usuario)
+            alta_reserva = form.save(commit=False)
+            alta_reserva.Tipo_reserva= "Restaurante"
+            alta_reserva.fecha_registracion= datetime.date.today()
+            alta_reserva.save()    
+
+            messages.add_message(request, messages.SUCCESS, 'Reserva enviada con exito', extra_tags="tag1")
+            #return render(request, 'Viajeros/index.html')
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
+    else:
+        form = ReservaRestauranteForm()
+    return render(request, 'Viajeros/paginas/enviar_reserva_restaurante.html', {'form': form})
+
+
+# Crear reserva de excursion
+def reservar_excursion(request):
+    if request.method == 'POST':
+        form = ReservaExcursionForm(request.POST)
+        if form.is_valid(): 
+            usuario =form.cleaned_data.get('usuario')
+            print("usuario:", usuario)
+            alta_reserva = form.save(commit=False)
+            alta_reserva.Tipo_reserva= "Excursion"
+            alta_reserva.fecha_registracion= datetime.date.today()
+            alta_reserva.save()    
+
+            messages.add_message(request, messages.SUCCESS, 'Reserva enviada con exito', extra_tags="tag1")
+            # return render(request, 'Viajeros/index.html')
+            return render(request, 'Viajeros/reservas/confirmacion_reserva.html')
+    else:
+        form = ReservaExcursionForm()
+    return render(request, 'Viajeros/paginas/enviar_reserva_excursion.html', {'form': form})
+
+
+
+######################################################################################################
+
+
+
