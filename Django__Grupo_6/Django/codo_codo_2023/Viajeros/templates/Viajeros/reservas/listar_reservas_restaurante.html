@@ -48,8 +48,8 @@
         <td>{{reserva.menor}}</td>
         <td>
    
-          <a href="{% url 'modificar_reserva' reserva.id %}">Modificar</a>
-          <a href="{% url 'eliminar_reserva' reserva.id %}">Eliminar</a>
+          <a href="{% url 'modificar_reserva_restaurante' reserva.id %}">Modificar</a>
+          <a href="{% url 'eliminar_reserva_restaurante' reserva.id %}">Eliminar</a>
         </td>
       </tr>
       {% endfor %}
