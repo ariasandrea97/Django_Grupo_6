@@ -129,7 +129,7 @@ def nosotros(request):
 
 
 def enviar_consulta(request):   
-    print("def enviar_consulta") 
+    
     if request.method == 'POST':
         form = EnviarConsultaForm(request.POST)
         if form.is_valid():
