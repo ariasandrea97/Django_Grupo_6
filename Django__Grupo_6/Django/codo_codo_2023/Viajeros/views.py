@@ -128,7 +128,8 @@ def nosotros(request):
     return render(request, 'Viajeros/paginas/nosotros.html', context)
 
 
-def enviar_consulta(request):    
+def enviar_consulta(request):   
+    print("def enviar_consulta") 
     if request.method == 'POST':
         form = EnviarConsultaForm(request.POST)
         if form.is_valid():
