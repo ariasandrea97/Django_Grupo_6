@@ -18,7 +18,7 @@
         <h2>FORMULARIO DE CONSULTA</h2>
         <br>
 
-        <form action="{% url 'enviar_consulta' %}" method="POST">
+        <form style="background-color:#cbf4f4" action="{% url 'enviar_consulta' %}" method="POST">
           {% csrf_token %}
           {{form.as_p}}
           <br>
